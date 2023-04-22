@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1cc4f438af9553d4caf31d46bd7c6d3d, type: 3}
+  m_Name: ChestSOList
+  m_EditorClassIdentifier: 
+  ChestSO:
+  - {fileID: 11400000, guid: f2669bdda92869946bf08200f0a38580, type: 2}
+  - {fileID: 11400000, guid: 00b49baf901943c498234ead70445d85, type: 2}
+  - {fileID: 11400000, guid: 9ec435e887cd6544fb5563ec88befb38, type: 2}
+  - {fileID: 11400000, guid: 88fbff96ae2fd1744ac3f1072aed205e, type: 2}
+  TransparentValue: 0.78
+  SixtySeconds: 60
+  TenMinute: 10
+  OneSecond: 1
+  DelayTimeInMilliSeconds: 1000

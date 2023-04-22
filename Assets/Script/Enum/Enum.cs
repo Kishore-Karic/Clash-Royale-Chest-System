@@ -11,9 +11,14 @@ namespace ChestSystem.Enum
 
     public enum ChestStatus
     {
-        None,
         Locked,
         Unlocking,
         Unlocked
+    }
+
+    public enum ErrorType
+    {
+        SlotFull,
+        NotEnoughGem
     }
 }

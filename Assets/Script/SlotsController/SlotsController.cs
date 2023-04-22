@@ -14,22 +14,27 @@ namespace ChestSystem.Slot
         {
             if(slotsAvailable == slotsList.Count)
             {
-                UIService.Instance.ShowSlotsFullMessage();
+                UIService.Instance.ShowErrorMessage(Enum.ErrorType.SlotFull);
             }
             else
             {
                 for(int i = 0; i < slotsList.Count; i++)
                 {
-                    if (slotsList[i].isEmpty == false)
+                    if (slotsList[i].isEmpty == true)
                     {
-                        slotsList[i].isEmpty = true;
-                        ChestService.Instance.CreateChest(i, slotsList[i].slotObject);
-                        slotsList[i].slotObject.SetActive(true);
-                        slotsAvailable++;
+                        CreateChest(i);
                         break;
                     }
                 }
             }
+        }
+
+        private void CreateChest(int i)
+        {
+            slotsList[i].isEmpty = false;
+            ChestService.Instance.CreateChest(i, slotsList[i].slotObject, this);
+            slotsList[i].slotObject.SetActive(true);
+            slotsAvailable++;
         }
 
         public void SetChestController(ChestController _chestController, int i)
@@ -40,7 +45,14 @@ namespace ChestSystem.Slot
         public void OnButtonClick(int i)
         {
             i--;
-            //slotsList[i].ChestController;
+            slotsList[i].ChestController.ButtonClick();
+        }
+
+        public void EmptySlot(int i)
+        {
+            slotsList[i].isEmpty = true;
+            slotsList[i].slotObject.SetActive(false);
+            slotsAvailable--;
         }
     }
 }

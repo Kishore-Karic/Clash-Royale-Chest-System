@@ -17,20 +17,31 @@ namespace ChestSystem.Chest
         public Sprite UnlockedImage { get; private set; }
         public Sprite OpenedImage { get; private set; }
         public string UnlockAmount { get; private set; }
+        public float TransparentValue { get; private set; }
+        public int SixtySeconds { get; private set; }
+        public int TenMinute { get; private set; }
+        public int OneSecond { get; private set; }
+        public int DelayTimeInMilliSeconds { get; private set; }
 
-        public ChestModel(ChestScriptableObject chestScriptableObject)
+        public ChestModel(ChestScriptableObject chestSO, ChestScriptableObjectList chestSOList)
         {
-            ChestType = chestScriptableObject.ChestType;
-            Name = chestScriptableObject.Name;
-            UnlockDuration = chestScriptableObject.UnlockDuration;
-            MinCoin = chestScriptableObject.MinCoin;
-            MaxCoin = chestScriptableObject.MaxCoin;
-            MinGem = chestScriptableObject.MinGem;
-            MaxGem = chestScriptableObject.MaxGem;
-            LockedImage = chestScriptableObject.LockedImage;
-            UnlockedImage = chestScriptableObject.UnlockedImage;
-            OpenedImage = chestScriptableObject.OpenedImage;
-            UnlockAmount = chestScriptableObject.UnlockAmount;
+            ChestType = chestSO.ChestType;
+            Name = chestSO.Name;
+            UnlockDuration = chestSO.UnlockDuration;
+            MinCoin = chestSO.MinCoin;
+            MaxCoin = chestSO.MaxCoin;
+            MinGem = chestSO.MinGem;
+            MaxGem = chestSO.MaxGem;
+            LockedImage = chestSO.LockedImage;
+            UnlockedImage = chestSO.UnlockedImage;
+            OpenedImage = chestSO.OpenedImage;
+            UnlockAmount = chestSO.UnlockAmount;
+
+            TransparentValue = chestSOList.TransparentValue;
+            SixtySeconds = chestSOList.SixtySeconds;
+            TenMinute = chestSOList.TenMinute;
+            OneSecond = chestSOList.OneSecond;
+            DelayTimeInMilliSeconds = chestSOList.DelayTimeInMilliSeconds;
         }
     }
 }
