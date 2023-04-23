@@ -11,21 +11,20 @@ namespace ChestSystem.Service
     {
         private ChestController chestController;
         private ChestController requestedChestController;
-        [SerializeField] private ChestView chestPrefab;
-        [SerializeField] private ChestScriptableObjectList chestSOList;
 
-        [SerializeField] private SlotsController slotController;
+        [SerializeField] private ChestScriptableObjectList chestSOList;
+        
         [SerializeField] private List<string> statusText;
 
-        public void CreateChest(int i, GameObject chestSlot, SlotsController _slotsController)
+        public void CreateChest(int i, ChestView _chestView, SlotsController slotsController)
         {
-            chestController = new ChestController(new ChestModel(GetRandomChest(), chestSOList), chestPrefab, chestSlot.transform, i);
-            slotController.SetChestController(chestController, i);
+            chestController = new ChestController(new ChestModel(GetRandomChest(), chestSOList), _chestView, i);
+            slotsController.SetChestController(chestController);
         }
 
         public void ReturnSlot(int i)
         {
-            slotController.EmptySlot(i);
+            SlotService.Instance.EmptySlot(i);
         }
 
         public void RequestForBuyWithGems(ChestController _chestController)

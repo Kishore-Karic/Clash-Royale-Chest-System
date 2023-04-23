@@ -134,13 +134,14 @@ GameObject:
   - component: {fileID: 16541525}
   - component: {fileID: 16541528}
   - component: {fileID: 16541526}
+  - component: {fileID: 16541529}
   m_Layer: 5
   m_Name: Slot1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &16541525
 RectTransform:
   m_ObjectHideFlags: 0
@@ -204,19 +205,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 0}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 197919226}
-        m_TargetAssemblyTypeName: ChestSystem.Slot.SlotsController, Assembly-CSharp
-        m_MethodName: OnButtonClick
-        m_Mode: 3
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 1
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!222 &16541528
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -225,6 +214,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 16541524}
   m_CullTransparentMesh: 1
+--- !u!114 &16541529
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 16541524}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b0b5b7cd87f537438a817fca75727eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  chestPrefab: {fileID: 2553484082339812754, guid: f508dcee8439ca848828b5ff3ca25007, type: 3}
+  isEmpty: 1
+  button: {fileID: 16541526}
 --- !u!1 &103113316
 GameObject:
   m_ObjectHideFlags: 0
@@ -432,7 +436,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 197919225}
-  - component: {fileID: 197919226}
   m_Layer: 5
   m_Name: ChestSlots
   m_TagString: Untagged
@@ -461,30 +464,9 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.43750003, y: 0.52187794}
   m_AnchorMax: {x: 0.56375, y: 0.5843756}
-  m_AnchoredPosition: {x: -0.06244564, y: 43}
+  m_AnchoredPosition: {x: -0.06244564, y: 30}
   m_SizeDelta: {x: 87.375, y: 92.653915}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &197919226
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 197919224}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2b0b5b7cd87f537438a817fca75727eb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  slotsList:
-  - slotObject: {fileID: 16541524}
-    isEmpty: 1
-  - slotObject: {fileID: 1391569344}
-    isEmpty: 1
-  - slotObject: {fileID: 525080858}
-    isEmpty: 1
-  - slotObject: {fileID: 477469390}
-    isEmpty: 1
 --- !u!1 &241527009
 GameObject:
   m_ObjectHideFlags: 0
@@ -577,7 +559,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   generateChestButton: {fileID: 323434314}
-  slotsController: {fileID: 197919226}
   coroutineDuration: 2
   sloteFullText: {fileID: 2082162089}
   notEnoughGemText: {fileID: 645035955}
@@ -622,7 +603,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.28125003, y: 0.12625116}
   m_AnchorMax: {x: 0.71875, y: 0.20500001}
-  m_AnchoredPosition: {x: 0.000030517578, y: -503}
+  m_AnchoredPosition: {x: 0.000030517578, y: -533}
   m_SizeDelta: {x: 306.24997, y: 118.006584}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &323434314
@@ -969,13 +950,14 @@ GameObject:
   - component: {fileID: 477469391}
   - component: {fileID: 477469394}
   - component: {fileID: 477469392}
+  - component: {fileID: 477469395}
   m_Layer: 5
   m_Name: Slot4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &477469391
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1039,19 +1021,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 0}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 197919226}
-        m_TargetAssemblyTypeName: ChestSystem.Slot.SlotsController, Assembly-CSharp
-        m_MethodName: OnButtonClick
-        m_Mode: 3
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 4
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!222 &477469394
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1060,6 +1030,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 477469390}
   m_CullTransparentMesh: 1
+--- !u!114 &477469395
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 477469390}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b0b5b7cd87f537438a817fca75727eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  chestPrefab: {fileID: 2553484082339812754, guid: f508dcee8439ca848828b5ff3ca25007, type: 3}
+  isEmpty: 1
+  button: {fileID: 477469392}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -1155,13 +1140,14 @@ GameObject:
   - component: {fileID: 525080859}
   - component: {fileID: 525080862}
   - component: {fileID: 525080860}
+  - component: {fileID: 525080863}
   m_Layer: 5
   m_Name: Slot3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &525080859
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1225,19 +1211,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 0}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 197919226}
-        m_TargetAssemblyTypeName: ChestSystem.Slot.SlotsController, Assembly-CSharp
-        m_MethodName: OnButtonClick
-        m_Mode: 3
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 3
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!222 &525080862
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1246,6 +1220,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 525080858}
   m_CullTransparentMesh: 1
+--- !u!114 &525080863
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 525080858}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b0b5b7cd87f537438a817fca75727eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  chestPrefab: {fileID: 2553484082339812754, guid: f508dcee8439ca848828b5ff3ca25007, type: 3}
+  isEmpty: 1
+  button: {fileID: 525080860}
 --- !u!1 &620916281
 GameObject:
   m_ObjectHideFlags: 0
@@ -1617,8 +1606,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.15625, y: 0.85425115}
   m_AnchorMax: {x: 0.84375, y: 0.90287215}
-  m_AnchoredPosition: {x: 0, y: 536.9998}
-  m_SizeDelta: {x: 481.25, y: 74.85945}
+  m_AnchoredPosition: {x: 0, y: 519}
+  m_SizeDelta: {x: 481.25, y: 74.85946}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &645035957
 MonoBehaviour:
@@ -1792,9 +1781,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63fe3e0ab9ac12948bf1f5c5ce6bab02, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  chestPrefab: {fileID: 2553484082339812754, guid: f508dcee8439ca848828b5ff3ca25007, type: 3}
   chestSOList: {fileID: 11400000, guid: 297606b17cf6a0a48988247fdc78d61e, type: 2}
-  slotController: {fileID: 197919226}
   statusText:
   - Locked
   - Unlocking
@@ -2064,6 +2051,55 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1358299861
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1358299863}
+  - component: {fileID: 1358299862}
+  m_Layer: 0
+  m_Name: SlotService
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1358299862
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1358299861}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 43da1067de3ac2e4ba65b61f48044379, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  slotsControllersList:
+  - {fileID: 16541529}
+  - {fileID: 1391569349}
+  - {fileID: 525080863}
+  - {fileID: 477469395}
+--- !u!4 &1358299863
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1358299861}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1391569344
 GameObject:
   m_ObjectHideFlags: 0
@@ -2075,13 +2111,14 @@ GameObject:
   - component: {fileID: 1391569345}
   - component: {fileID: 1391569348}
   - component: {fileID: 1391569346}
+  - component: {fileID: 1391569349}
   m_Layer: 5
   m_Name: Slot2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1391569345
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2145,19 +2182,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 0}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 197919226}
-        m_TargetAssemblyTypeName: ChestSystem.Slot.SlotsController, Assembly-CSharp
-        m_MethodName: OnButtonClick
-        m_Mode: 3
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 2
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!222 &1391569348
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2166,6 +2191,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1391569344}
   m_CullTransparentMesh: 1
+--- !u!114 &1391569349
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1391569344}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b0b5b7cd87f537438a817fca75727eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  chestPrefab: {fileID: 2553484082339812754, guid: f508dcee8439ca848828b5ff3ca25007, type: 3}
+  isEmpty: 1
+  button: {fileID: 1391569346}
 --- !u!1 &1428574813
 GameObject:
   m_ObjectHideFlags: 0
@@ -2719,7 +2759,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.15625, y: 0.85425115}
   m_AnchorMax: {x: 0.84375, y: 0.90287215}
-  m_AnchoredPosition: {x: 0, y: 537}
+  m_AnchoredPosition: {x: 0, y: 519}
   m_SizeDelta: {x: 481.25, y: 74.85946}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &2141421425

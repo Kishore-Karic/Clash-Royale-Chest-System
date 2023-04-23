@@ -1,58 +1,58 @@
 using ChestSystem.Chest;
-using ChestSystem.Service;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace ChestSystem.Slot
 {
     public class SlotsController : MonoBehaviour
     {
-        public List<SlotType> slotsList;
-        private int slotsAvailable;
+        [SerializeField] private ChestView chestPrefab;
+        [SerializeField] private bool isEmpty;
+        [SerializeField] private ChestController chestController;
+        [SerializeField] private Button button;
+        public ChestView ChestView { get; private set; }
 
-        public void CreateChestRequest()
+        private void Awake()
         {
-            if(slotsAvailable == slotsList.Count)
+            if (button.IsInteractable())
             {
-                UIService.Instance.ShowErrorMessage(Enum.ErrorType.SlotFull);
-            }
-            else
-            {
-                for(int i = 0; i < slotsList.Count; i++)
-                {
-                    if (slotsList[i].isEmpty == true)
-                    {
-                        CreateChest(i);
-                        break;
-                    }
-                }
+                button.onClick.AddListener(OnButtonClick);
             }
         }
 
-        private void CreateChest(int i)
+        private void Start()
         {
-            slotsList[i].isEmpty = false;
-            ChestService.Instance.CreateChest(i, slotsList[i].slotObject, this);
-            slotsList[i].slotObject.SetActive(true);
-            slotsAvailable++;
+            button.interactable = false;
+
+            ChestView = Instantiate(chestPrefab, transform);
+            ChestView.gameObject.SetActive(false);
+        }
+        
+        public bool GetIsEmpty() => isEmpty;
+
+        public void SlotIsTaken()
+        {
+            isEmpty = false;
+            ChestView.gameObject.SetActive(true);
+            button.interactable = true;
         }
 
-        public void SetChestController(ChestController _chestController, int i)
+        public void SetChestController(ChestController _chestController)
         {
-            slotsList[i].ChestController = _chestController;
+            chestController = _chestController;
         }
 
-        public void OnButtonClick(int i)
+        public void OnButtonClick()
         {
-            i--;
-            slotsList[i].ChestController.ButtonClick();
+            chestController.ButtonClick();
         }
 
-        public void EmptySlot(int i)
+        public void EmptySlot()
         {
-            slotsList[i].isEmpty = true;
-            slotsList[i].slotObject.SetActive(false);
-            slotsAvailable--;
+            isEmpty = true;
+            chestController = null;
+            ChestView.gameObject.SetActive(false);
+            button.interactable = false;
         }
     }
 }

@@ -14,20 +14,20 @@ namespace ChestSystem.Chest
         private ChestStatus currentStatus;
         private TextMeshProUGUI timerText;
         private float unlockTimeInSeconds;
-        private int slotListIndex;
+        private int slotsControllersListIndex;
         private TextMeshProUGUI instantOpenGemText;
         private float gemsForTime;
 
-        public ChestController(ChestModel _chestModel, ChestView _chestView, Transform slotTransform, int i)
+        public ChestController(ChestModel _chestModel, ChestView _chestView, int i)
         {
             chestModel = _chestModel;
-            chestView = GameObject.Instantiate(_chestView, slotTransform);
+            chestView = _chestView;
 
             chestView.SetChestController(this, chestModel.Name);
             chestView.UpdateImageAndText(chestModel.LockedImage, ChestService.Instance.GetChestStatusText((int)ChestStatus.Locked), chestModel.UnlockAmount);
             currentStatus = ChestStatus.Locked;
             unlockTimeInSeconds = chestModel.UnlockDuration;
-            slotListIndex = i;
+            slotsControllersListIndex = i;
         }
 
         public void ButtonClick()
@@ -73,9 +73,9 @@ namespace ChestSystem.Chest
 
         private void OpenChest()
         {
-            ChestService.Instance.ReturnSlot(slotListIndex);
+            ChestService.Instance.ReturnSlot(slotsControllersListIndex);
             GameService.Instance.AddRewards(GetRandomValues(chestModel.MinCoin, chestModel.MaxCoin), GetRandomValues(chestModel.MinGem, chestModel.MaxGem));
-            chestView.DestroyGameObject();
+            ChestService.Instance.ReturnSlot(slotsControllersListIndex);
         }
 
         private int GetRandomValues(int min, int max)

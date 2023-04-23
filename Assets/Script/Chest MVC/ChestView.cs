@@ -45,10 +45,5 @@ namespace ChestSystem.Chest
         {
             instantOpenLayer.SetActive(_value);
         }
-
-        public void DestroyGameObject()
-        {
-            Destroy(gameObject);
-        }
     }
 }

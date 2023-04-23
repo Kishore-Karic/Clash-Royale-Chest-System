@@ -1,6 +1,5 @@
 using ChestSystem.Enum;
 using ChestSystem.GenericSingleton;
-using ChestSystem.Slot;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
@@ -10,8 +9,7 @@ namespace ChestSystem.Service
     public class UIService : GenericSingleton<UIService>
     {
         public Button generateChestButton;
-
-        [SerializeField] private SlotsController slotsController;
+        
         [SerializeField] private float coroutineDuration;
         [SerializeField] private GameObject sloteFullText;
         [SerializeField] private GameObject notEnoughGemText;
@@ -30,7 +28,7 @@ namespace ChestSystem.Service
 
         private void CreateChestRequest()
         {
-            slotsController.CreateChestRequest();
+            SlotService.Instance.CreateChestRequest();
         }
 
         public void InstantlyOpenChest()
