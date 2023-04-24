@@ -22,3 +22,7 @@ MonoBehaviour:
   TenMinute: 10
   OneSecond: 1
   DelayTimeInMilliSeconds: 1000
+  SecondsForHour: 3600
+  HourString: 'h '
+  MinuteString: 'm '
+  SecondString: s

@@ -17,11 +17,16 @@ namespace ChestSystem.Chest
         public Sprite UnlockedImage { get; private set; }
         public Sprite OpenedImage { get; private set; }
         public string UnlockAmount { get; private set; }
+
         public float TransparentValue { get; private set; }
         public int SixtySeconds { get; private set; }
         public int TenMinute { get; private set; }
         public int OneSecond { get; private set; }
         public int DelayTimeInMilliSeconds { get; private set; }
+        public int SecondsForHour { get; private set; }
+        public string HourString { get; private set; }
+        public string MinuteString { get; private set; }
+        public string SecondString { get; private set; }
 
         public ChestModel(ChestScriptableObject chestSO, ChestScriptableObjectList chestSOList)
         {
@@ -42,6 +47,10 @@ namespace ChestSystem.Chest
             TenMinute = chestSOList.TenMinute;
             OneSecond = chestSOList.OneSecond;
             DelayTimeInMilliSeconds = chestSOList.DelayTimeInMilliSeconds;
+            SecondsForHour = chestSOList.SecondsForHour;
+            HourString = chestSOList.HourString;
+            MinuteString = chestSOList.MinuteString;
+            SecondString = chestSOList.SecondString;
         }
     }
 }

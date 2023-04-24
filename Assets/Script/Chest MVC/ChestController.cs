@@ -24,8 +24,7 @@ namespace ChestSystem.Chest
             chestView = _chestView;
 
             chestView.SetChestController(this, chestModel.Name);
-            chestView.UpdateImageAndText(chestModel.LockedImage, ChestService.Instance.GetChestStatusText((int)ChestStatus.Locked), chestModel.UnlockAmount);
-            currentStatus = ChestStatus.Locked;
+            SetState(ChestStatus.Locked);
             unlockTimeInSeconds = chestModel.UnlockDuration;
             slotsControllersListIndex = i;
         }
@@ -38,7 +37,7 @@ namespace ChestSystem.Chest
             }
             else if(currentStatus == ChestStatus.Unlocking)
             {
-                OpenInstantly();
+                UnlockInstantly();
             }
             else if(currentStatus == ChestStatus.Unlocked)
             {
@@ -53,7 +52,7 @@ namespace ChestSystem.Chest
             StartTimer();
         }
 
-        private void OpenInstantly()
+        private void UnlockInstantly()
         {
             if (GameService.Instance.IsRequireGemAvailable((int)MathF.Ceiling(gemsForTime)))
             {
@@ -73,7 +72,6 @@ namespace ChestSystem.Chest
 
         private void OpenChest()
         {
-            ChestService.Instance.ReturnSlot(slotsControllersListIndex);
             GameService.Instance.AddRewards(GetRandomValues(chestModel.MinCoin, chestModel.MaxCoin), GetRandomValues(chestModel.MinGem, chestModel.MaxGem));
             ChestService.Instance.ReturnSlot(slotsControllersListIndex);
         }
@@ -85,14 +83,16 @@ namespace ChestSystem.Chest
 
         private async void StartTimer()
         {
-            float minutes, seconds;
+            float hours, minutes, seconds;
 
             while(unlockTimeInSeconds > -chestModel.OneSecond && currentStatus == ChestStatus.Unlocking)
             {
-                minutes = Mathf.FloorToInt(unlockTimeInSeconds / chestModel.SixtySeconds);
+                hours = Mathf.FloorToInt(unlockTimeInSeconds / chestModel.SecondsForHour);
+                minutes = Mathf.FloorToInt((unlockTimeInSeconds / chestModel.SixtySeconds) % chestModel.SixtySeconds);
                 seconds = Mathf.FloorToInt(unlockTimeInSeconds % chestModel.SixtySeconds);
 
-                timerText.text = minutes + "m " + seconds + "s";
+                timerText.text = hours + chestModel.HourString + minutes + chestModel.MinuteString + seconds + chestModel.SecondString;
+
                 gemsForTime = ((unlockTimeInSeconds / chestModel.SixtySeconds) / chestModel.TenMinute);
                 instantOpenGemText.text = "" + MathF.Ceiling(gemsForTime);
 
@@ -104,6 +104,12 @@ namespace ChestSystem.Chest
 
         private void SetState(ChestStatus chestStatus)
         {
+            if(chestStatus == ChestStatus.Locked)
+            {
+                currentStatus = ChestStatus.Locked;
+                chestView.UpdateImageAndText(chestModel.LockedImage, ChestService.Instance.GetChestStatusText((int)ChestStatus.Locked), chestModel.UnlockAmount);
+            }
+
             if(chestStatus == ChestStatus.Unlocking)
             {
                 currentStatus = ChestStatus.Unlocking;
@@ -115,8 +121,8 @@ namespace ChestSystem.Chest
             if(chestStatus == ChestStatus.Unlocked)
             {
                 currentStatus = ChestStatus.Unlocked;
+                chestView.UpdateImageAndText(chestModel.UnlockedImage, ChestService.Instance.GetChestStatusText((int)ChestStatus.Unlocked), null);
                 chestView.SetInstantActiveLayer(false);
-                chestView.UpdateImageAndText(chestModel.UnlockedImage, ChestService.Instance.GetChestStatusText((int)ChestStatus.Unlocked), "");
             }
         }
 

@@ -13,5 +13,9 @@ namespace ChestSystem.ScriptableObjects
         public int TenMinute;
         public int OneSecond;
         public int DelayTimeInMilliSeconds;
+        public int SecondsForHour;
+        public string HourString;
+        public string MinuteString;
+        public string SecondString;
     }
 }

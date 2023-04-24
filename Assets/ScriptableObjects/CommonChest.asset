@@ -23,8 +23,3 @@ MonoBehaviour:
   UnlockedImage: {fileID: 21300000, guid: 55c6a99d739abb24596587b7ea457804, type: 3}
   OpenedImage: {fileID: 21300000, guid: cb569b9145aec894c9f5279b5066645d, type: 3}
   UnlockAmount: 15m
-  TransparentValue: 0.78
-  SixtySeconds: 60
-  TenMinute: 10
-  OneSecond: 1
-  DelayTimeInMilliSeconds: 1000

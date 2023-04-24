@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ChestType: 4
   Name: Legendary
-  UnlockDuration: 5400
+  UnlockDuration: 10800
   MinCoin: 1000
   MaxCoin: 1200
   MinGem: 80
@@ -22,9 +22,4 @@ MonoBehaviour:
   LockedImage: {fileID: 21300000, guid: 569034536ecaaa64eabcbb967e3862ce, type: 3}
   UnlockedImage: {fileID: 21300000, guid: 476ce5e18ff9ad6428c61fe80bb9ae14, type: 3}
   OpenedImage: {fileID: 21300000, guid: 517dc5416eb23044ca73433fd04aa9f6, type: 3}
-  UnlockAmount: 90m
-  TransparentValue: 0.78
-  SixtySeconds: 60
-  TenMinute: 10
-  OneSecond: 1
-  DelayTimeInMilliSeconds: 1000
+  UnlockAmount: 3h
