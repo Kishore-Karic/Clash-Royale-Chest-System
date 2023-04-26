@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ChestType: 4
   Name: Legendary
-  UnlockDuration: 10800
+  UnlockDuration: 20
   MinCoin: 1000
   MaxCoin: 1200
   MinGem: 80

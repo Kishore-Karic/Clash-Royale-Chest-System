@@ -10,29 +10,33 @@ namespace ChestSystem.Service
 {
     public class UIService : GenericSingleton<UIService>
     {
-        private Coroutine coroutine;
-        private Queue<string> errorTextQueue;
+        private Queue<string> displayTextQueue;
+        private RequestType requestType;
 
         [SerializeField] private Button generateChestButton;
         [SerializeField] private float coroutineDuration;
         [SerializeField] private float coroutineDelay;
-        [SerializeField] private TextMeshProUGUI errorMessageText;
-        [SerializeField] private List<string> errorTextList;
-        [SerializeField] private GameObject instantOpenConfirmationLayer;
         [SerializeField] private Button yesButton;
         [SerializeField] private Button noButton;
         [SerializeField] private GameObject chestSlotsUI;
+        [SerializeField] private TextMeshProUGUI displayMessageText;
+        [SerializeField] private List<string> errorTextList;
+        [SerializeField] private List<string> confirmationTextList;
+        [SerializeField] private GameObject requestConfirmationLayer;
+        [SerializeField] private TextMeshProUGUI requestConfirmationText;
+        [SerializeField] private List<string> requestTextList;
         
         protected override void Awake()
         {
             base.Awake();
-            errorTextQueue = new Queue<string>();
+            displayTextQueue = new Queue<string>();
 
             generateChestButton.onClick.AddListener(CreateChestRequest);
-            yesButton.onClick.AddListener(BuyWithGems);
-            noButton.onClick.AddListener(CloseConfirmationLayer);
+            yesButton.onClick.AddListener(RequestPositive);
+            noButton.onClick.AddListener(RequestNegetive);
 
-            errorMessageText.text = null;
+            displayMessageText.text = null;
+            requestConfirmationText.text = null;
         }
 
         private void CreateChestRequest()
@@ -40,52 +44,82 @@ namespace ChestSystem.Service
             SlotService.Instance.CreateChestRequest();
         }
 
-        public void InstantlyOpenChest()
+        public void DisplayConfirmationLayer(RequestType _requestType)
         {
-            instantOpenConfirmationLayer.SetActive(true);
+            requestType = _requestType;
+         
+            if (requestType == RequestType.OpenWithGems)
+            {
+                requestConfirmationText.text = requestTextList[0];
+            }
+            else if(requestType == RequestType.AddToUnlockQueue)
+            {
+                requestConfirmationText.text = requestTextList[1];
+            }
+
+            requestConfirmationLayer.SetActive(true);
             chestSlotsUI.SetActive(false);
         }
 
-        private void BuyWithGems()
+        private void RequestPositive()
         {
-            ChestService.Instance.RequestAccepted();
-            CloseConfirmationLayer();
+            ChestService.Instance.RequestAccepted(requestType);
+            RequestNegetive();
         }
 
-        private void CloseConfirmationLayer()
+        private void RequestNegetive()
         {
             chestSlotsUI.SetActive(true);
-            instantOpenConfirmationLayer.SetActive(false);
+            requestConfirmationLayer.SetActive(false);
         }
 
         public void ShowErrorMessage(ErrorType errorType)
         {
             if (errorType == ErrorType.SlotFull)
             {
-                errorTextQueue.Enqueue(errorTextList[0]);
+                displayTextQueue.Enqueue(errorTextList[0]);
             }
-            if(errorType == ErrorType.NotEnoughGem)
+            else if(errorType == ErrorType.NotEnoughGem)
             {
-                errorTextQueue.Enqueue(errorTextList[1]);
+                displayTextQueue.Enqueue(errorTextList[1]);
+            }
+            else if(errorType == ErrorType.QueueIsFull)
+            {
+                displayTextQueue.Enqueue(errorTextList[2]);
+            }
+            else if(errorType == ErrorType.AddedToQueue)
+            {
+                displayTextQueue.Enqueue(errorTextList[3]);
             }
 
-            if (coroutine == null)
-            {
-                StartCoroutine(CommonCoroutine());
-            }
+            StartCoroutine(CommonCoroutine(Color.red));
         }
         
-        IEnumerator CommonCoroutine()
+        public void ShowConfirmationMessage(ConfirmationType confirmationType)
         {
-            while (errorTextQueue.Count > 0)
+            if(confirmationType == ConfirmationType.PurchaseDone)
             {
-                errorMessageText.text = errorTextQueue.Dequeue();
-                yield return new WaitForSeconds(coroutineDuration);
-
-                errorMessageText.text = null;
-                yield return new WaitForSeconds(coroutineDelay);
+                displayTextQueue.Enqueue(confirmationTextList[0]);
             }
-            coroutine = null;
+            else if(confirmationType == ConfirmationType.RewardsCollected)
+            {
+                displayTextQueue.Enqueue(confirmationTextList[1]);
+            }
+            else if(confirmationType == ConfirmationType.AddedToQueue)
+            {
+                displayTextQueue.Enqueue(confirmationTextList[2]);
+            }
+
+            StartCoroutine(CommonCoroutine(Color.green));
+        }
+
+        IEnumerator CommonCoroutine(Color color)
+        {
+            displayMessageText.color = color;
+            displayMessageText.text = displayTextQueue.Dequeue();
+            yield return new WaitForSeconds(coroutineDuration);
+
+            displayMessageText.text = null;
         }
     }
 }

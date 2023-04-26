@@ -11,6 +11,14 @@ namespace ChestSystem.Resource
         [SerializeField] private TextMeshProUGUI coinsText;
         [SerializeField] private TextMeshProUGUI gemsText;
 
+        [SerializeField] private int coins;
+        [SerializeField] private int gems;
+
+        private void Start()
+        {
+            UpdateResource(coins, gems);
+        }
+
         public void UpdateResource(int _coins, int _gems)
         {
             Coins += _coins;
@@ -29,6 +37,28 @@ namespace ChestSystem.Resource
         {
             coinsText.text = "" + Coins;
             gemsText.text = "" + Gems;
+        }
+
+        public bool IsRequireGemAvailable(int value)
+        {
+            if (Gems < value)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+        public void UpdatePurchaseCost(int cost)
+        {
+            DeductPurchaseCost(cost);
+        }
+
+        public void AddRewards(int coins, int gems)
+        {
+            UpdateResource(coins, gems);
         }
     }
 }

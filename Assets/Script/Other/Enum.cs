@@ -19,6 +19,21 @@ namespace ChestSystem.Enum
     public enum ErrorType
     {
         SlotFull,
-        NotEnoughGem
+        NotEnoughGem,
+        QueueIsFull,
+        AddedToQueue
+    }
+
+    public enum ConfirmationType
+    {
+        PurchaseDone,
+        RewardsCollected,
+        AddedToQueue
+    }
+
+    public enum RequestType
+    {
+        OpenWithGems,
+        AddToUnlockQueue
     }
 }
