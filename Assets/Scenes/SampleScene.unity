@@ -578,6 +578,7 @@ MonoBehaviour:
   requestConfirmationText: {fileID: 1428574815}
   requestTextList:
   - Do you want to Open with gems?
+  - Do you want to add Chest to Queue and Start Unlocking?
   - Do you want to add Chest to Unlock Queue?
 --- !u!1 &323434312
 GameObject:

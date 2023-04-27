@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ChestType: 2
   Name: Rare
-  UnlockDuration: 10
+  UnlockDuration: 1800
   MinCoin: 300
   MaxCoin: 500
   MinGem: 20

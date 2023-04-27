@@ -52,9 +52,13 @@ namespace ChestSystem.Service
             {
                 requestConfirmationText.text = requestTextList[0];
             }
-            else if(requestType == RequestType.AddToUnlockQueue)
+            else if(requestType == RequestType.AddToQueueStartUnlock)
             {
                 requestConfirmationText.text = requestTextList[1];
+            }
+            else if(requestType == RequestType.AddToUnlockQueue)
+            {
+                requestConfirmationText.text = requestTextList[2];
             }
 
             requestConfirmationLayer.SetActive(true);

@@ -34,6 +34,7 @@ namespace ChestSystem.Enum
     public enum RequestType
     {
         OpenWithGems,
+        AddToQueueStartUnlock,
         AddToUnlockQueue
     }
 }

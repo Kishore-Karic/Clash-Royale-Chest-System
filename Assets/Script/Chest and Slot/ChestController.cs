@@ -47,7 +47,11 @@ namespace ChestSystem.Chest
                 }
             }
 
-            if (!isAddedToQueue && ChestService.Instance.CanEnqueueChest())
+            if(!isAddedToQueue && !ChestService.Instance.IsAnyChestUnlocking())
+            {
+                ChestService.Instance.RequestForConfirmation(this, RequestType.AddToQueueStartUnlock);
+            }
+            else if (!isAddedToQueue && ChestService.Instance.CanEnqueueChest())
             {
                 ChestService.Instance.RequestForConfirmation(this, RequestType.AddToUnlockQueue);
             }
@@ -55,13 +59,17 @@ namespace ChestSystem.Chest
             {
                 UIService.Instance.ShowErrorMessage(ErrorType.AddedToQueue);
             }
+            else if(!isUnlocking && !isAddedToQueue)
+            {
+                UIService.Instance.ShowErrorMessage(ErrorType.QueueIsFull);
+            }
         }
 
         private void AddControllerToQueue()
         {
             if (ChestService.Instance.CanEnqueueChest())
             {
-                ChestService.Instance.EnqueueChest(this);
+                ChestService.Instance.AddChestToQueue(this);
             }
             else
             {
@@ -98,16 +106,17 @@ namespace ChestSystem.Chest
                 UIService.Instance.ShowConfirmationMessage(ConfirmationType.PurchaseDone);
                 SetState(ChestStatus.Unlocked);
             }
+            else if(requestType == RequestType.AddToQueueStartUnlock)
+            {
+                ChestService.Instance.AddChestToQueue(this);
+                UIService.Instance.ShowConfirmationMessage(ConfirmationType.AddedToQueue);
+                isAddedToQueue = true;
+                StartUnlocking();
+                ChestService.Instance.SetIsChestUnlocking(true);
+            }
             else if(requestType == RequestType.AddToUnlockQueue)
             {
-                if (ChestService.Instance.IsAnyChestUnlocking() && currentStatus == ChestStatus.Locked)
-                {
-                    AddControllerToQueue();
-                }
-                else
-                {
-                    StartUnlocking();
-                }
+                ChestService.Instance.AddChestToQueue(this);
                 isAddedToQueue = true;
                 UIService.Instance.ShowConfirmationMessage(ConfirmationType.AddedToQueue);
             }
@@ -143,7 +152,11 @@ namespace ChestSystem.Chest
                 await Task.Delay(chestModel.DelayTimeInMilliSeconds);
                 unlockTimeInSeconds -= chestModel.OneSecond;
             }
-            SetState(ChestStatus.Unlocked);
+
+            if (currentStatus != ChestStatus.Unlocked)
+            {
+                SetState(ChestStatus.Unlocked);
+            }
         }
 
         private void SetState(ChestStatus chestStatus)
@@ -169,7 +182,7 @@ namespace ChestSystem.Chest
                 chestView.SetInstantActiveLayer(false);
 
                 ChestService.Instance.SetIsChestUnlocking(false);
-                ChestService.Instance.UnlockNextChestInQueue();
+                ChestService.Instance.FinishedUnlockingChest();
             }
         }
 

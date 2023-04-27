@@ -25,7 +25,6 @@ namespace ChestSystem.Service
         {
             base.Awake();
             chestUnlockQueue = new Queue<ChestController>();
-            chestUnlockLimit--;
         }
 
         public void CreateChest(int i, ChestView _chestView, SlotsController slotsController)
@@ -34,14 +33,15 @@ namespace ChestSystem.Service
             slotsController.SetChestController(chestController);
         }
 
-        public void EnqueueChest(ChestController _chestController)
+        public void AddChestToQueue(ChestController _chestController)
         {
             chestUnlockQueue.Enqueue(_chestController);
         }
 
-        private ChestController DequeueChest()
+        public void FinishedUnlockingChest()
         {
-            return chestUnlockQueue.Dequeue();
+            chestUnlockQueue.Dequeue();
+            UnlockNextChestInQueue();
         }
 
         public bool IsAnyChestUnlocking() => isUnlocking;
@@ -51,14 +51,13 @@ namespace ChestSystem.Service
             isUnlocking = _value;
         }
 
-        public void UnlockNextChestInQueue()
+        private void UnlockNextChestInQueue()
         {
-            if(chestUnlockQueue.Count == 0)
+            if (chestUnlockQueue.Count != 0)
             {
-                return;
+                chestUnlockQueue.Peek().StartUnlocking();
+                SetIsChestUnlocking(true);
             }
-            ChestController nextChest = DequeueChest();
-            nextChest.StartUnlocking();
         }
 
         public bool CanEnqueueChest() => chestUnlockQueue.Count < chestUnlockLimit;

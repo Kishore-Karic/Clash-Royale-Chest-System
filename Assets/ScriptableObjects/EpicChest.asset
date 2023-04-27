@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ChestType: 3
   Name: Epic
-  UnlockDuration: 15
+  UnlockDuration: 3600
   MinCoin: 600
   MaxCoin: 800
   MinGem: 45
