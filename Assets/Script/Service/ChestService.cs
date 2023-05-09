@@ -13,9 +13,9 @@ namespace ChestSystem.Service
     {
         private ChestController chestController;
         private ChestController requestedChestController;
-        private Queue<ChestController> chestUnlockQueue;
+        public Queue<ChestController> chestUnlockQueue { get; private set; }
         private bool isUnlocking;
-        
+
         [SerializeField] private int chestUnlockLimit;
         [SerializeField] private ChestScriptableObjectList chestSOList;
         [SerializeField] private List<string> statusText;
@@ -27,15 +27,23 @@ namespace ChestSystem.Service
             chestUnlockQueue = new Queue<ChestController>();
         }
 
-        public void CreateChest(int i, ChestView _chestView, SlotsController slotsController)
+        public void CreateChest(bool newChest, ChestScriptableObject chestScriptableObject, ChestView chestView, int slotIndex, SlotsController slotsController, ChestStatus chestStatus, bool isAddedToQueue, bool isUnlocking, int queueIndex)
         {
-            chestController = new ChestController(new ChestModel(GetRandomChest(), chestSOList), _chestView, i);
+            if (newChest)
+            {
+                chestController = new ChestController(new ChestModel(GetRandomChest(), chestSOList), chestView, slotIndex, newChest, chestStatus, isAddedToQueue, isUnlocking, queueIndex);
+            }
+            else
+            {
+                chestController = new ChestController(new ChestModel(chestScriptableObject, chestSOList), chestView, slotIndex, newChest, chestStatus, isAddedToQueue, isUnlocking, queueIndex);
+            }
             slotsController.SetChestController(chestController);
         }
 
-        public void AddChestToQueue(ChestController _chestController)
+        public int AddChestToQueue(ChestController _chestController)
         {
             chestUnlockQueue.Enqueue(_chestController);
+            return chestUnlockQueue.Count;
         }
 
         public void FinishedUnlockingChest()
@@ -61,6 +69,12 @@ namespace ChestSystem.Service
         }
 
         public bool CanEnqueueChest() => chestUnlockQueue.Count < chestUnlockLimit;
+
+        public void ResetChestQueue()
+        {
+            chestUnlockQueue.Clear();
+            isUnlocking = false;
+        }
 
         public void ReturnSlot(int i)
         {

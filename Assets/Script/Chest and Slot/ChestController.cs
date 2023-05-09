@@ -1,6 +1,8 @@
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 using ChestSystem.Enum;
+using ChestSystem.ScriptableObjects;
 using ChestSystem.Service;
 using TMPro;
 using UnityEngine;
@@ -9,69 +11,84 @@ namespace ChestSystem.Chest
 {
     public class ChestController
     {
+        public ChestStatus CurrentStatus { get; private set; }
+        public float UnlockTimeInSeconds { get; private set; }
+        public int SlotsControllersListIndex { get; private set; }
+        public bool IsAddedToQueue { get; private set; }
+        public bool IsUnlocking { get; private set; }
+        public int QueueIndex { get; private set; }
+
         private ChestView chestView;
         private ChestModel chestModel;
-        private ChestStatus currentStatus;
         private TextMeshProUGUI timerText;
-        private float unlockTimeInSeconds;
-        private int slotsControllersListIndex;
         private TextMeshProUGUI instantOpenGemText;
         private float gemsForTime;
-        private bool isUnlocking;
-        private bool isAddedToQueue;
+        private CancellationTokenSource tokenSource;
 
-        public ChestController(ChestModel _chestModel, ChestView _chestView, int i)
+        public ChestController(ChestModel _chestModel, ChestView _chestView, int _slotIndex, bool isNewChest, ChestStatus chestStatus, bool _isAddedToQueue, bool _isUnlocking, int _queueIndex)
         {
             chestModel = _chestModel;
             chestView = _chestView;
 
+            tokenSource = new CancellationTokenSource();
             chestView.SetChestController(this, chestModel.Name);
-            SetState(ChestStatus.Locked);
-            unlockTimeInSeconds = chestModel.UnlockDuration;
-            slotsControllersListIndex = i;
-            isAddedToQueue = false;
-            isUnlocking = false;
+            if (isNewChest)
+            {
+                SetState(ChestStatus.Locked);
+                UnlockTimeInSeconds = chestModel.UnlockDuration;
+            }
+            else
+            {
+                SetState(chestStatus);
+                QueueIndex = _queueIndex;
+                if(chestStatus != ChestStatus.Unlocked)
+                {
+                    if (chestStatus == ChestStatus.Unlocking)
+                    {
+                        instantOpenGemText = chestView.GetInstantOpenText();
+                        ChestService.Instance.SetIsChestUnlocking(true);
+                        StartTimer(tokenSource.Token);
+                    }
+
+                    if (_isAddedToQueue == true)
+                    {
+                        ChestService.Instance.AddChestToQueue(this);
+                    }
+                }
+            }
+
+            SlotsControllersListIndex = _slotIndex;
+            IsAddedToQueue = _isAddedToQueue;
+            IsUnlocking = _isUnlocking;
         }
 
         public void ButtonClick()
         {
-            if (isUnlocking)
+            if (IsUnlocking)
             {
-                if (currentStatus == ChestStatus.Unlocking)
+                if (CurrentStatus == ChestStatus.Unlocking)
                 {
                     UnlockInstantly();
                 }
-                else if (currentStatus == ChestStatus.Unlocked)
+                else if (CurrentStatus == ChestStatus.Unlocked)
                 {
                     OpenChest();
                 }
             }
 
-            if(!isAddedToQueue && !ChestService.Instance.IsAnyChestUnlocking())
+            if(!IsAddedToQueue && !ChestService.Instance.IsAnyChestUnlocking())
             {
                 ChestService.Instance.RequestForConfirmation(this, RequestType.AddToQueueStartUnlock);
             }
-            else if (!isAddedToQueue && ChestService.Instance.CanEnqueueChest())
+            else if (!IsAddedToQueue && ChestService.Instance.CanEnqueueChest())
             {
                 ChestService.Instance.RequestForConfirmation(this, RequestType.AddToUnlockQueue);
             }
-            else if (!isUnlocking && isAddedToQueue)
+            else if (!IsUnlocking && IsAddedToQueue)
             {
                 UIService.Instance.ShowErrorMessage(ErrorType.AddedToQueue);
             }
-            else if(!isUnlocking && !isAddedToQueue)
-            {
-                UIService.Instance.ShowErrorMessage(ErrorType.QueueIsFull);
-            }
-        }
-
-        private void AddControllerToQueue()
-        {
-            if (ChestService.Instance.CanEnqueueChest())
-            {
-                ChestService.Instance.AddChestToQueue(this);
-            }
-            else
+            else if(!IsUnlocking && !IsAddedToQueue)
             {
                 UIService.Instance.ShowErrorMessage(ErrorType.QueueIsFull);
             }
@@ -82,8 +99,12 @@ namespace ChestSystem.Chest
             instantOpenGemText = chestView.GetInstantOpenText();
             SetState(ChestStatus.Unlocking);
             ChestService.Instance.SetIsChestUnlocking(true);
-            StartTimer();
-            isUnlocking = true;
+            StartTimer(tokenSource.Token);
+            IsUnlocking = true;
+            if(QueueIndex != chestModel.One)
+            {
+                QueueIndex = chestModel.One;
+            }
         }
 
         private void UnlockInstantly()
@@ -105,19 +126,22 @@ namespace ChestSystem.Chest
                 ChestService.Instance.Resource.UpdatePurchaseCost((int)MathF.Ceiling(gemsForTime));
                 UIService.Instance.ShowConfirmationMessage(ConfirmationType.PurchaseDone);
                 SetState(ChestStatus.Unlocked);
+                ChestService.Instance.SetIsChestUnlocking(false);
+                ChestService.Instance.FinishedUnlockingChest();
+                QueueIndex--;
             }
             else if(requestType == RequestType.AddToQueueStartUnlock)
             {
-                ChestService.Instance.AddChestToQueue(this);
+                QueueIndex = ChestService.Instance.AddChestToQueue(this);
                 UIService.Instance.ShowConfirmationMessage(ConfirmationType.AddedToQueue);
-                isAddedToQueue = true;
+                IsAddedToQueue = true;
                 StartUnlocking();
                 ChestService.Instance.SetIsChestUnlocking(true);
             }
             else if(requestType == RequestType.AddToUnlockQueue)
             {
-                ChestService.Instance.AddChestToQueue(this);
-                isAddedToQueue = true;
+                QueueIndex = ChestService.Instance.AddChestToQueue(this);
+                IsAddedToQueue = true;
                 UIService.Instance.ShowConfirmationMessage(ConfirmationType.AddedToQueue);
             }
         }
@@ -126,7 +150,7 @@ namespace ChestSystem.Chest
         {
             ChestService.Instance.Resource.AddRewards(GetRandomValues(chestModel.MinCoin, chestModel.MaxCoin), GetRandomValues(chestModel.MinGem, chestModel.MaxGem));
             UIService.Instance.ShowConfirmationMessage(ConfirmationType.RewardsCollected);
-            ChestService.Instance.ReturnSlot(slotsControllersListIndex);
+            ChestService.Instance.ReturnSlot(SlotsControllersListIndex);
         }
 
         private int GetRandomValues(int min, int max)
@@ -134,28 +158,46 @@ namespace ChestSystem.Chest
             return UnityEngine.Random.Range(min, max);
         }
 
-        private async void StartTimer()
+        public void StopTimer()
+        {
+            chestView.SetInstantActiveLayer(false);
+            ChestService.Instance.ResetChestQueue();
+            tokenSource.Cancel();
+        }
+
+        private async void StartTimer(CancellationToken token)
         {
             float hours, minutes, seconds;
 
-            while(unlockTimeInSeconds > -chestModel.OneSecond && currentStatus == ChestStatus.Unlocking)
+            while(UnlockTimeInSeconds > -chestModel.OneSecond && CurrentStatus == ChestStatus.Unlocking)
             {
-                hours = Mathf.FloorToInt(unlockTimeInSeconds / chestModel.SecondsForHour);
-                minutes = Mathf.FloorToInt((unlockTimeInSeconds / chestModel.SixtySeconds) % chestModel.SixtySeconds);
-                seconds = Mathf.FloorToInt(unlockTimeInSeconds % chestModel.SixtySeconds);
+                hours = Mathf.FloorToInt(UnlockTimeInSeconds / chestModel.SecondsForHour);
+                minutes = Mathf.FloorToInt((UnlockTimeInSeconds / chestModel.SixtySeconds) % chestModel.SixtySeconds);
+                seconds = Mathf.FloorToInt(UnlockTimeInSeconds % chestModel.SixtySeconds);
 
                 timerText.text = hours + chestModel.HourString + minutes + chestModel.MinuteString + seconds + chestModel.SecondString;
 
-                gemsForTime = ((unlockTimeInSeconds / chestModel.SixtySeconds) / chestModel.TenMinute);
+                gemsForTime = ((UnlockTimeInSeconds / chestModel.SixtySeconds) / chestModel.TenMinute);
                 instantOpenGemText.text = "" + MathF.Ceiling(gemsForTime);
 
-                await Task.Delay(chestModel.DelayTimeInMilliSeconds);
-                unlockTimeInSeconds -= chestModel.OneSecond;
+                try
+                {
+                    await Task.Delay(chestModel.DelayTimeInMilliSeconds, token);
+                }
+                catch(OperationCanceledException) when (token.IsCancellationRequested)
+                {
+                    return;
+                }
+
+                UnlockTimeInSeconds -= chestModel.OneSecond;
             }
 
-            if (currentStatus != ChestStatus.Unlocked)
+            if (CurrentStatus != ChestStatus.Unlocked)
             {
                 SetState(ChestStatus.Unlocked);
+                ChestService.Instance.SetIsChestUnlocking(false);
+                ChestService.Instance.FinishedUnlockingChest();
+                QueueIndex--;
             }
         }
 
@@ -163,13 +205,13 @@ namespace ChestSystem.Chest
         {
             if(chestStatus == ChestStatus.Locked)
             {
-                currentStatus = ChestStatus.Locked;
+                CurrentStatus = ChestStatus.Locked;
                 chestView.UpdateImageAndText(chestModel.LockedImage, ChestService.Instance.GetChestStatusText((int)ChestStatus.Locked), chestModel.UnlockAmount);
             }
 
             if(chestStatus == ChestStatus.Unlocking)
             {
-                currentStatus = ChestStatus.Unlocking;
+                CurrentStatus = ChestStatus.Unlocking;
                 chestView.UpdateImageAndText(chestModel.LockedImage, ChestService.Instance.GetChestStatusText((int)ChestStatus.Unlocking), timerText.text);
                 chestView.EnteredUnlockingStage(chestModel.TransparentValue);
                 chestView.SetInstantActiveLayer(true);
@@ -177,12 +219,9 @@ namespace ChestSystem.Chest
 
             if(chestStatus == ChestStatus.Unlocked)
             {
-                currentStatus = ChestStatus.Unlocked;
+                CurrentStatus = ChestStatus.Unlocked;
                 chestView.UpdateImageAndText(chestModel.UnlockedImage, ChestService.Instance.GetChestStatusText((int)ChestStatus.Unlocked), null);
                 chestView.SetInstantActiveLayer(false);
-
-                ChestService.Instance.SetIsChestUnlocking(false);
-                ChestService.Instance.FinishedUnlockingChest();
             }
         }
 
@@ -190,5 +229,12 @@ namespace ChestSystem.Chest
         {
             timerText = _timerText;
         }
+
+        public void SetRemainingTime(float _value)
+        {
+            UnlockTimeInSeconds = _value;
+        }
+
+        public ChestScriptableObject GetChestScriptableObject() => chestModel.ChestScriptableObject;
     }
 }

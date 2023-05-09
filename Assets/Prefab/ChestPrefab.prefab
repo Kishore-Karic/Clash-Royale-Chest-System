@@ -313,7 +313,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.78431374}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.78}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -348,6 +348,13 @@ MonoBehaviour:
   chestTimeText: {fileID: 5577096426094731273}
   instantOpenGemText: {fileID: 1350598941384430760}
   instantOpenLayer: {fileID: 2563016186369242702}
+  oneSecond: 1
+  sixtySeconds: 60
+  secondsForHour: 3600
+  tenMinute: 10
+  hourString: 'h '
+  minuteString: 'm '
+  secondString: s
 --- !u!1 &5577096425982854612
 GameObject:
   m_ObjectHideFlags: 0
@@ -819,7 +826,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 
+  m_text: 2
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

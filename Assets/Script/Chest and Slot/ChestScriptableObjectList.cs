@@ -17,5 +17,6 @@ namespace ChestSystem.ScriptableObjects
         public string HourString;
         public string MinuteString;
         public string SecondString;
+        public int One;
     }
 }

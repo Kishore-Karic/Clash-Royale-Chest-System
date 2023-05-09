@@ -26,3 +26,4 @@ MonoBehaviour:
   HourString: 'h '
   MinuteString: 'm '
   SecondString: s
+  One: 1

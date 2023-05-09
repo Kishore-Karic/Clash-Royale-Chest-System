@@ -1,5 +1,6 @@
 using ChestSystem.Enum;
 using ChestSystem.GenericSingleton;
+using ChestSystem.Resource;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -25,6 +26,9 @@ namespace ChestSystem.Service
         [SerializeField] private GameObject requestConfirmationLayer;
         [SerializeField] private TextMeshProUGUI requestConfirmationText;
         [SerializeField] private List<string> requestTextList;
+        [SerializeField] private Button exitButton;
+        [SerializeField] private Button resetButton;
+        [SerializeField] private InGameResource inGameResource;
         
         protected override void Awake()
         {
@@ -34,6 +38,8 @@ namespace ChestSystem.Service
             generateChestButton.onClick.AddListener(CreateChestRequest);
             yesButton.onClick.AddListener(RequestPositive);
             noButton.onClick.AddListener(RequestNegetive);
+            exitButton.onClick.AddListener(ExitGame);
+            resetButton.onClick.AddListener(ResetGame);
 
             displayMessageText.text = null;
             requestConfirmationText.text = null;
@@ -63,6 +69,8 @@ namespace ChestSystem.Service
 
             requestConfirmationLayer.SetActive(true);
             chestSlotsUI.SetActive(false);
+            exitButton.gameObject.SetActive(false);
+            resetButton.gameObject.SetActive(false);
         }
 
         private void RequestPositive()
@@ -74,6 +82,8 @@ namespace ChestSystem.Service
         private void RequestNegetive()
         {
             chestSlotsUI.SetActive(true);
+            exitButton.gameObject.SetActive(true);
+            resetButton.gameObject.SetActive(true);
             requestConfirmationLayer.SetActive(false);
         }
 
@@ -124,6 +134,17 @@ namespace ChestSystem.Service
             yield return new WaitForSeconds(coroutineDuration);
 
             displayMessageText.text = null;
+        }
+
+        private void ResetGame()
+        {
+            SlotService.Instance.ResetGame();
+            inGameResource.ResetGame();
+        }
+
+        private void ExitGame()
+        {
+            Application.Quit();
         }
     }
 }
