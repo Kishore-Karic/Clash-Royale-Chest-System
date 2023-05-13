@@ -13,12 +13,14 @@ namespace ChestSystem.Service
         [SerializeField] private int zero;
 
         private int slotsRemaining;
+        private event Action OnSave;
         private event Action OnReset;
 
         private void Start()
         {
             for(int i = 0; i < slotsControllersList.Count; i++)
             {
+                OnSave += slotsControllersList[i].StoreChestDetails;
                 OnReset += slotsControllersList[i].ResetChestDetails;
             }
 
@@ -78,6 +80,11 @@ namespace ChestSystem.Service
         {
             slotsControllersList[i].EmptySlot();
             slotsRemaining--;
+        }
+
+        public void SaveGame()
+        {
+            OnSave?.Invoke();
         }
 
         public void ResetGame()

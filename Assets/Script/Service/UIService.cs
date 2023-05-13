@@ -29,6 +29,7 @@ namespace ChestSystem.Service
         [SerializeField] private Button exitButton;
         [SerializeField] private Button resetButton;
         [SerializeField] private InGameResource inGameResource;
+        [SerializeField] private Button saveButton;
         
         protected override void Awake()
         {
@@ -40,6 +41,7 @@ namespace ChestSystem.Service
             noButton.onClick.AddListener(RequestNegetive);
             exitButton.onClick.AddListener(ExitGame);
             resetButton.onClick.AddListener(ResetGame);
+            saveButton.onClick.AddListener(SaveGame);
 
             displayMessageText.text = null;
             requestConfirmationText.text = null;
@@ -134,6 +136,12 @@ namespace ChestSystem.Service
             yield return new WaitForSeconds(coroutineDuration);
 
             displayMessageText.text = null;
+        }
+
+        private void SaveGame()
+        {
+            SlotService.Instance.SaveGame();
+            inGameResource.SaveResource();
         }
 
         private void ResetGame()

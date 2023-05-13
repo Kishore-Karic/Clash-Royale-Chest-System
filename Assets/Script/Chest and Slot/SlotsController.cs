@@ -1,5 +1,6 @@
 using ChestSystem.Chest;
 using ChestSystem.Service;
+using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,8 +12,8 @@ namespace ChestSystem.Slot
         [SerializeField] private bool isEmpty;
         [SerializeField] private ChestController chestController;
         [SerializeField] private Button button;
-        [SerializeField] private SlotSaveScriptableObject saveScriptableObject;
         [SerializeField] private int zero;
+        [SerializeField] private string saveLocationString;
 
         public ChestView ChestView { get; private set; }
         public int QueueIndex { get; private set; }
@@ -23,7 +24,18 @@ namespace ChestSystem.Slot
             {
                 button.onClick.AddListener(OnButtonClick);
             }
-            QueueIndex = saveScriptableObject.QueueIndex;
+
+            if (File.Exists(Application.persistentDataPath + saveLocationString))
+            {
+                string json = File.ReadAllText(Application.persistentDataPath + saveLocationString);
+                SlotSaveData savedData = JsonUtility.FromJson<SlotSaveData>(json);
+
+                QueueIndex = savedData.QueueIndex;
+            }
+            else
+            {
+                QueueIndex = zero;
+            }
         }
 
         private void Start()
@@ -36,13 +48,19 @@ namespace ChestSystem.Slot
 
         public void LoadSlotController()
         {
-            if (saveScriptableObject.IsSaved)
+            if (File.Exists(Application.persistentDataPath + saveLocationString))
             {
-                ChestService.Instance.CreateChest(false, saveScriptableObject.ChestScriptableObject, ChestView, saveScriptableObject.SlotIndex, this, saveScriptableObject.ChestStatus, saveScriptableObject.IsAddedToQueue, saveScriptableObject.IsUnlocking, saveScriptableObject.QueueIndex);
-                chestController.SetRemainingTime(saveScriptableObject.RemainingTime);
-                SlotService.Instance.SetSlotRemaining();
-                SlotIsTaken();
-                saveScriptableObject.IsSaved = false;
+                string json = File.ReadAllText(Application.persistentDataPath + saveLocationString);
+                SlotSaveData savedData = JsonUtility.FromJson<SlotSaveData>(json);
+
+                if (savedData.IsSaved)
+                {
+                    ChestService.Instance.CreateChest(false, savedData.ChestScriptableObject, ChestView, savedData.SlotIndex, this, savedData.ChestStatus, savedData.IsAddedToQueue, savedData.IsUnlocking, savedData.QueueIndex);
+                    chestController.SetRemainingTime(savedData.RemainingTime);
+                    SlotService.Instance.SetSlotRemaining();
+                    SlotIsTaken();
+                    savedData.IsSaved = false;
+                }
             }
         }
         
@@ -77,38 +95,43 @@ namespace ChestSystem.Slot
         {
             if (!isEmpty && chestController != null)
             {
-                saveScriptableObject.IsSaved = true;
-                saveScriptableObject.ChestScriptableObject = chestController.GetChestScriptableObject();
-                saveScriptableObject.ChestStatus = chestController.CurrentStatus;
-                saveScriptableObject.RemainingTime = chestController.UnlockTimeInSeconds;
-                saveScriptableObject.SlotIndex = chestController.SlotsControllersListIndex;
-                saveScriptableObject.IsAddedToQueue = chestController.IsAddedToQueue;
-                saveScriptableObject.IsUnlocking = chestController.IsUnlocking;
-                saveScriptableObject.QueueIndex = chestController.QueueIndex;
+                SlotSaveData slotData = new SlotSaveData();
+                
+                slotData.IsSaved = true;
+                slotData.ChestScriptableObject = chestController.GetChestScriptableObject();
+                slotData.ChestStatus = chestController.CurrentStatus;
+                slotData.RemainingTime = chestController.UnlockTimeInSeconds;
+                slotData.SlotIndex = chestController.SlotsControllersListIndex;
+                slotData.IsAddedToQueue = chestController.IsAddedToQueue;
+                slotData.IsUnlocking = chestController.IsUnlocking;
+                slotData.QueueIndex = chestController.QueueIndex;
+
+                string json = JsonUtility.ToJson(slotData, true);
+                File.WriteAllText(Application.persistentDataPath + saveLocationString, json);
             }
         }
 
         public void ResetChestDetails()
         {
-            saveScriptableObject.IsSaved = false;
-            saveScriptableObject.ChestScriptableObject = null;
-            saveScriptableObject.ChestStatus = Enum.ChestStatus.Locked;
-            saveScriptableObject.RemainingTime = zero;
-            saveScriptableObject.SlotIndex = zero;
-            saveScriptableObject.IsAddedToQueue = false;
-            saveScriptableObject.IsUnlocking = false;
-            saveScriptableObject.QueueIndex = zero;
+            SlotSaveData slotData = new SlotSaveData();
+
+            slotData.IsSaved = false;
+            slotData.ChestScriptableObject = null;
+            slotData.ChestStatus = Enum.ChestStatus.Locked;
+            slotData.RemainingTime = zero;
+            slotData.SlotIndex = zero;
+            slotData.IsAddedToQueue = false;
+            slotData.IsUnlocking = false;
+            slotData.QueueIndex = zero;
+
+            string json = JsonUtility.ToJson(slotData, true);
+            File.WriteAllText(Application.persistentDataPath + saveLocationString, json);
 
             if (chestController != null)
             {
                 chestController.StopTimer();
             }
             EmptySlot();
-        }
-
-        private void OnDestroy()
-        {
-            StoreChestDetails();
         }
     }
 }

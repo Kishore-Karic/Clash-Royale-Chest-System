@@ -1,0 +1,12 @@
+{
+    "IsSaved": false,
+    "ChestScriptableObject": {
+        "instanceID": 0
+    },
+    "ChestStatus": 0,
+    "RemainingTime": 0.0,
+    "SlotIndex": 0,
+    "IsAddedToQueue": false,
+    "IsUnlocking": false,
+    "QueueIndex": 0
+}

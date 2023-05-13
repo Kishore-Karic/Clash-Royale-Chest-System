@@ -1,4 +1,4 @@
-using ChestSystem.Game;
+using System.IO;
 using TMPro;
 using UnityEngine;
 
@@ -14,11 +14,29 @@ namespace ChestSystem.Resource
 
         [SerializeField] private int defaultCoins;
         [SerializeField] private int defaultGems;
-        [SerializeField] GameSaveScriptableObject gameSaveScriptableObject;
+        [SerializeField] string saveLocationString;
+        [SerializeField] private int zero;
 
         private void Start()
         {
-            UpdateResource(gameSaveScriptableObject.Coins, gameSaveScriptableObject.Gems);
+            if (File.Exists(Application.persistentDataPath + saveLocationString))
+            {
+                string json = File.ReadAllText(Application.persistentDataPath + saveLocationString);
+                GameSaveData savedData = JsonUtility.FromJson<GameSaveData>(json);
+
+                if (savedData.Coins == zero && savedData.Gems == zero)
+                {
+                    UpdateResource(defaultCoins, defaultGems);
+                }
+                else
+                {
+                    UpdateResource(savedData.Coins, savedData.Gems);
+                }
+            }
+            else
+            {
+                UpdateResource(defaultCoins, defaultGems);
+            }
         }
 
         public void UpdateResource(int _coins, int _gems)
@@ -65,20 +83,26 @@ namespace ChestSystem.Resource
 
         public void SaveResource()
         {
-            gameSaveScriptableObject.Coins = coins;
-            gameSaveScriptableObject.Gems = gems;
+            GameSaveData gameSave = new GameSaveData();
+            
+            gameSave.Coins = coins;
+            gameSave.Gems = gems;
+
+            string json = JsonUtility.ToJson(gameSave, true);
+            File.WriteAllText(Application.persistentDataPath + saveLocationString, json);
         }
 
         public void ResetGame()
         {
-            coins = defaultCoins;
-            gems = defaultGems;
-            RefreshUI();
-        }
+            if (File.Exists(Application.dataPath + saveLocationString))
+            {
+                string json = File.ReadAllText(Application.persistentDataPath + saveLocationString);
+                GameSaveData savedData = JsonUtility.FromJson<GameSaveData>(json);
 
-        private void OnDestroy()
-        {
-            SaveResource();
+                coins = defaultCoins;
+                gems = defaultGems;
+                RefreshUI();
+            }
         }
     }
 }
