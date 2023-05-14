@@ -17,7 +17,6 @@ namespace ChestSystem.Service
         public bool SlotLoaded;
 
         private int slotsRemaining;
-        private event Action OnSave;
         private event Action OnReset;
         private Coroutine coroutine;
 
@@ -31,7 +30,6 @@ namespace ChestSystem.Service
         {
             for(int i = 0; i < slotsControllersList.Count; i++)
             {
-                OnSave += slotsControllersList[i].StoreChestDetails;
                 OnReset += slotsControllersList[i].ResetChestDetails;
             }
         }
@@ -103,11 +101,6 @@ namespace ChestSystem.Service
         {
             slotsControllersList[i].EmptySlot();
             slotsRemaining--;
-        }
-
-        public void SaveGame()
-        {
-            OnSave?.Invoke();
         }
 
         public void ResetGame()

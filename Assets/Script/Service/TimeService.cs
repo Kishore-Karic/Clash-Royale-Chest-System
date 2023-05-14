@@ -82,7 +82,7 @@ namespace ChestSystem.Service
             Int32.TryParse(second, out timeSecond);
 
             CurrentTime = timeHoure * (sixtySeconds * sixtySeconds) + timeMinute * sixtySeconds + timeSecond;
-
+            
             if (firstTime)
             {
                 firstTime = false;

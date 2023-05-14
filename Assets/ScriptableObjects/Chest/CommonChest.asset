@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ChestType: 1
   Name: Common
-  UnlockDuration: 30
+  UnlockDuration: 900
   MinCoin: 100
   MaxCoin: 200
   MinGem: 10

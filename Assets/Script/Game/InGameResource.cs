@@ -106,5 +106,10 @@ namespace ChestSystem.Resource
                 RefreshUI();
             }
         }
+
+        private void OnDestroy()
+        {
+            SaveGame();
+        }
     }
 }

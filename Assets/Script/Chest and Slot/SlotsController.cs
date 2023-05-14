@@ -53,7 +53,7 @@ namespace ChestSystem.Slot
                 string json = File.ReadAllText(Application.persistentDataPath + saveLocationString);
                 SlotSaveData savedData = JsonUtility.FromJson<SlotSaveData>(json);
 
-                if (savedData.IsSaved && savedData.ChestStatus != Enum.ChestStatus.Unlocked)
+                if (savedData.IsSaved)
                 {
                     bool isChestUnlocking = false;
                     if (savedData.QueueIndex == two && SlotService.Instance.FirstChestUnlocked)
@@ -124,9 +124,15 @@ namespace ChestSystem.Slot
                         chestController.SetRemainingTime(savedData.RemainingTime);
                     }
 
+                    SlotSaveData slotData = new SlotSaveData();
+
+                    slotData.IsSaved = false;
+
+                    string _json = JsonUtility.ToJson(slotData, true);
+                    File.WriteAllText(Application.persistentDataPath + saveLocationString, _json);
+
                     SlotService.Instance.SetSlotRemaining();
                     SlotIsTaken();
-                    savedData.IsSaved = false;
                 }
             }
 
@@ -179,6 +185,15 @@ namespace ChestSystem.Slot
                 string json = JsonUtility.ToJson(slotData, true);
                 File.WriteAllText(Application.persistentDataPath + saveLocationString, json);
             }
+            else
+            {
+                SlotSaveData slotData = new SlotSaveData();
+
+                slotData.IsSaved = false;
+
+                string json = JsonUtility.ToJson(slotData, true);
+                File.WriteAllText(Application.persistentDataPath + saveLocationString, json);
+            }
         }
 
         public void ResetChestDetails()
@@ -203,6 +218,11 @@ namespace ChestSystem.Slot
                 chestController.StopTimer();
             }
             EmptySlot();
+        }
+
+        private void OnDestroy()
+        {
+            StoreChestDetails();
         }
     }
 }

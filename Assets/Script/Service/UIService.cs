@@ -29,7 +29,7 @@ namespace ChestSystem.Service
         [SerializeField] private Button exitButton;
         [SerializeField] private Button resetButton;
         [SerializeField] private InGameResource inGameResource;
-        [SerializeField] private Button saveButton;
+        [SerializeField] private string saveInfoText;
         
         protected override void Awake()
         {
@@ -41,10 +41,12 @@ namespace ChestSystem.Service
             noButton.onClick.AddListener(RequestNegetive);
             exitButton.onClick.AddListener(ExitGame);
             resetButton.onClick.AddListener(ResetGame);
-            saveButton.onClick.AddListener(SaveGame);
 
             displayMessageText.text = null;
             requestConfirmationText.text = null;
+
+            displayTextQueue.Enqueue(saveInfoText);
+            StartCoroutine(CommonCoroutine(Color.yellow));
         }
         
         private void CreateChestRequest()
@@ -138,13 +140,6 @@ namespace ChestSystem.Service
             displayMessageText.text = null;
         }
 
-        private void SaveGame()
-        {
-            SlotService.Instance.SaveGame();
-            TimeService.Instance.GetTime();
-            inGameResource.SaveGame();
-        }
-
         private void ResetGame()
         {
             SlotService.Instance.ResetGame();
@@ -153,6 +148,7 @@ namespace ChestSystem.Service
 
         private void ExitGame()
         {
+            TimeService.Instance.GetTime();
             Application.Quit();
         }
     }
