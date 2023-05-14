@@ -1,6 +1,7 @@
 using ChestSystem.GenericSingleton;
 using ChestSystem.Slot;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -12,10 +13,20 @@ namespace ChestSystem.Service
         [SerializeField] private int queueIndex;
         [SerializeField] private int zero;
 
+        public bool FirstChestUnlocked { get; private set; }
+        public bool SlotLoaded;
+
         private int slotsRemaining;
         private event Action OnSave;
         private event Action OnReset;
+        private Coroutine coroutine;
 
+        protected override void Awake()
+        {
+            base.Awake();
+            SlotLoaded = false;
+            FirstChestUnlocked = false;
+        }
         private void Start()
         {
             for(int i = 0; i < slotsControllersList.Count; i++)
@@ -23,11 +34,18 @@ namespace ChestSystem.Service
                 OnSave += slotsControllersList[i].StoreChestDetails;
                 OnReset += slotsControllersList[i].ResetChestDetails;
             }
-
-            ExecuteSlotController();
         }
 
-        private void ExecuteSlotController()
+        public void LoadSlots()
+        {
+            if(coroutine != null)
+            {
+                StopCoroutine(coroutine);
+            }
+            coroutine = StartCoroutine(ExecuteSlotController());
+        }
+
+        private IEnumerator ExecuteSlotController()
         {
             int count = zero;
 
@@ -46,9 +64,14 @@ namespace ChestSystem.Service
                         slotsControllersList[i].LoadSlotController();
                         count++;
                     }
+
+                    yield return new WaitUntil(() => SlotLoaded == true);
+                    SlotLoaded = false;
                 }
             }
         }
+
+        public void SetFirstChestUnlocked() => FirstChestUnlocked = true;
 
         public void CreateChestRequest()
         {

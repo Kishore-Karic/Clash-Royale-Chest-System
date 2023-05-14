@@ -46,7 +46,7 @@ namespace ChestSystem.Service
             displayMessageText.text = null;
             requestConfirmationText.text = null;
         }
-
+        
         private void CreateChestRequest()
         {
             SlotService.Instance.CreateChestRequest();
@@ -141,7 +141,8 @@ namespace ChestSystem.Service
         private void SaveGame()
         {
             SlotService.Instance.SaveGame();
-            inGameResource.SaveResource();
+            TimeService.Instance.GetTime();
+            inGameResource.SaveGame();
         }
 
         private void ResetGame()

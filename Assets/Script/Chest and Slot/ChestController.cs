@@ -48,6 +48,10 @@ namespace ChestSystem.Chest
                         instantOpenGemText = chestView.GetInstantOpenText();
                         ChestService.Instance.SetIsChestUnlocking(true);
                         StartTimer(tokenSource.Token);
+                        if (QueueIndex != chestModel.One)
+                        {
+                            QueueIndex = chestModel.One;
+                        }
                     }
 
                     if (_isAddedToQueue == true)
@@ -236,5 +240,6 @@ namespace ChestSystem.Chest
         }
 
         public ChestScriptableObject GetChestScriptableObject() => chestModel.ChestScriptableObject;
+        public float GetTotalUnlockDuration() => chestModel.UnlockDuration;
     }
 }

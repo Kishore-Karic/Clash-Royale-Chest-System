@@ -1,5 +1,6 @@
 using ChestSystem.Chest;
 using ChestSystem.Service;
+using System;
 using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
@@ -14,6 +15,8 @@ namespace ChestSystem.Slot
         [SerializeField] private Button button;
         [SerializeField] private int zero;
         [SerializeField] private string saveLocationString;
+        [SerializeField] private int one;
+        [SerializeField] private int two;
 
         public ChestView ChestView { get; private set; }
         public int QueueIndex { get; private set; }
@@ -24,6 +27,11 @@ namespace ChestSystem.Slot
             {
                 button.onClick.AddListener(OnButtonClick);
             }
+
+            button.interactable = false;
+
+            ChestView = Instantiate(chestPrefab, transform);
+            ChestView.gameObject.SetActive(false);
 
             if (File.Exists(Application.persistentDataPath + saveLocationString))
             {
@@ -38,14 +46,6 @@ namespace ChestSystem.Slot
             }
         }
 
-        private void Start()
-        {
-            button.interactable = false;
-
-            ChestView = Instantiate(chestPrefab, transform);
-            ChestView.gameObject.SetActive(false);
-        }
-
         public void LoadSlotController()
         {
             if (File.Exists(Application.persistentDataPath + saveLocationString))
@@ -53,15 +53,84 @@ namespace ChestSystem.Slot
                 string json = File.ReadAllText(Application.persistentDataPath + saveLocationString);
                 SlotSaveData savedData = JsonUtility.FromJson<SlotSaveData>(json);
 
-                if (savedData.IsSaved)
+                if (savedData.IsSaved && savedData.ChestStatus != Enum.ChestStatus.Unlocked)
                 {
-                    ChestService.Instance.CreateChest(false, savedData.ChestScriptableObject, ChestView, savedData.SlotIndex, this, savedData.ChestStatus, savedData.IsAddedToQueue, savedData.IsUnlocking, savedData.QueueIndex);
-                    chestController.SetRemainingTime(savedData.RemainingTime);
+                    bool isChestUnlocking = false;
+                    if (savedData.QueueIndex == two && SlotService.Instance.FirstChestUnlocked)
+                    {
+                        ChestService.Instance.CreateChest(false, savedData.ChestScriptableObject, ChestView, savedData.SlotIndex, this, Enum.ChestStatus.Unlocking, savedData.IsAddedToQueue, true, one);
+                        isChestUnlocking = true;
+                    }
+                    else if(savedData.QueueIndex == one)
+                    {
+                        ChestService.Instance.CreateChest(false, savedData.ChestScriptableObject, ChestView, savedData.SlotIndex, this, savedData.ChestStatus, savedData.IsAddedToQueue, savedData.IsUnlocking, savedData.QueueIndex);
+                        isChestUnlocking = savedData.IsUnlocking;
+                    }
+                    else
+                    {
+                        ChestService.Instance.CreateChest(false, savedData.ChestScriptableObject, ChestView, savedData.SlotIndex, this, savedData.ChestStatus, savedData.IsAddedToQueue, savedData.IsUnlocking, savedData.QueueIndex);
+                        isChestUnlocking = false;
+                    }
+
+                    if (isChestUnlocking && savedData.ChestStatus != Enum.ChestStatus.Unlocked)
+                    {
+                        float tempRemainingChestTime, checkWithRemainingTime;
+
+                        if(savedData.QueueIndex == two)
+                        {
+                            if(savedData.TotalUnlockDuration <= TimeService.Instance.RemainingTime)
+                            {
+                                tempRemainingChestTime = zero;
+                                checkWithRemainingTime = TimeService.Instance.RemainingTime - savedData.TotalUnlockDuration;
+                            }
+                            else
+                            {
+                                tempRemainingChestTime = MathF.Abs(savedData.TotalUnlockDuration - TimeService.Instance.RemainingTime);
+                                checkWithRemainingTime = TimeService.Instance.RemainingTime - tempRemainingChestTime;
+                            }
+                        }
+                        else
+                        {
+                            if (savedData.RemainingTime <= TimeService.Instance.RemainingTime)
+                            {
+                                tempRemainingChestTime = zero;
+                                checkWithRemainingTime = TimeService.Instance.RemainingTime - savedData.RemainingTime;
+                                if (savedData.QueueIndex == one)
+                                {
+                                    SlotService.Instance.SetFirstChestUnlocked();
+                                }
+                            }
+                            else
+                            {
+                                tempRemainingChestTime = MathF.Abs(savedData.RemainingTime - TimeService.Instance.RemainingTime);
+                                checkWithRemainingTime = TimeService.Instance.RemainingTime - tempRemainingChestTime;
+                            }
+                        }
+
+                        chestController.SetRemainingTime(tempRemainingChestTime);
+
+                        if (checkWithRemainingTime < TimeService.Instance.RemainingTime)
+                        {
+                            float timeServiceRemainingTime = TimeService.Instance.RemainingTime - checkWithRemainingTime;
+                            TimeService.Instance.SetRemainingTime(timeServiceRemainingTime);
+                        }
+                        else
+                        {
+                            TimeService.Instance.SetRemainingTime(TimeService.Instance.RemainingTime);
+                        }
+                    }
+                    else
+                    {
+                        chestController.SetRemainingTime(savedData.RemainingTime);
+                    }
+
                     SlotService.Instance.SetSlotRemaining();
                     SlotIsTaken();
                     savedData.IsSaved = false;
                 }
             }
+
+            SlotService.Instance.SlotLoaded = true;
         }
         
         public bool GetIsEmpty() => isEmpty;
@@ -105,6 +174,7 @@ namespace ChestSystem.Slot
                 slotData.IsAddedToQueue = chestController.IsAddedToQueue;
                 slotData.IsUnlocking = chestController.IsUnlocking;
                 slotData.QueueIndex = chestController.QueueIndex;
+                slotData.TotalUnlockDuration = chestController.GetTotalUnlockDuration();
 
                 string json = JsonUtility.ToJson(slotData, true);
                 File.WriteAllText(Application.persistentDataPath + saveLocationString, json);
@@ -123,6 +193,7 @@ namespace ChestSystem.Slot
             slotData.IsAddedToQueue = false;
             slotData.IsUnlocking = false;
             slotData.QueueIndex = zero;
+            slotData.TotalUnlockDuration = zero;
 
             string json = JsonUtility.ToJson(slotData, true);
             File.WriteAllText(Application.persistentDataPath + saveLocationString, json);

@@ -1,3 +1,4 @@
+using ChestSystem.Service;
 using System.IO;
 using TMPro;
 using UnityEngine;
@@ -6,8 +7,8 @@ namespace ChestSystem.Resource
 {
     public class InGameResource : MonoBehaviour
     {
-        private int coins;
-        private int gems;
+        public int Coins { get; private set; }
+        public int Gems { get; private set; }
 
         [SerializeField] private TextMeshProUGUI coinsText;
         [SerializeField] private TextMeshProUGUI gemsText;
@@ -41,27 +42,27 @@ namespace ChestSystem.Resource
 
         public void UpdateResource(int _coins, int _gems)
         {
-            coins += _coins;
-            gems += _gems;
+            Coins += _coins;
+            Gems += _gems;
 
             RefreshUI();
         }
 
         public void DeductPurchaseCost(int cost)
         {
-            gems -= cost;
+            Gems -= cost;
             RefreshUI();
         }
 
         private void RefreshUI()
         {
-            coinsText.text = "" + coins;
-            gemsText.text = "" + gems;
+            coinsText.text = "" + Coins;
+            gemsText.text = "" + Gems;
         }
 
         public bool IsRequireGemAvailable(int costValue)
         {
-            if (gems < costValue)
+            if (Gems < costValue)
             {
                 return false;
             }
@@ -81,12 +82,13 @@ namespace ChestSystem.Resource
             UpdateResource(coins, gems);
         }
 
-        public void SaveResource()
+        public void SaveGame()
         {
             GameSaveData gameSave = new GameSaveData();
-            
-            gameSave.Coins = coins;
-            gameSave.Gems = gems;
+
+            gameSave.Coins = Coins;
+            gameSave.Gems = Gems;
+            gameSave.LastSavedTimeInSeconds = TimeService.Instance.CurrentTime;
 
             string json = JsonUtility.ToJson(gameSave, true);
             File.WriteAllText(Application.persistentDataPath + saveLocationString, json);
@@ -94,13 +96,13 @@ namespace ChestSystem.Resource
 
         public void ResetGame()
         {
-            if (File.Exists(Application.dataPath + saveLocationString))
+            if (File.Exists(Application.persistentDataPath + saveLocationString))
             {
                 string json = File.ReadAllText(Application.persistentDataPath + saveLocationString);
                 GameSaveData savedData = JsonUtility.FromJson<GameSaveData>(json);
 
-                coins = defaultCoins;
-                gems = defaultGems;
+                Coins = defaultCoins;
+                Gems = defaultGems;
                 RefreshUI();
             }
         }

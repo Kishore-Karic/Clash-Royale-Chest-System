@@ -11,4 +11,5 @@ public class SlotSaveData
     public bool IsAddedToQueue;
     public bool IsUnlocking;
     public int QueueIndex;
+    public float TotalUnlockDuration;
 }

@@ -231,6 +231,8 @@ MonoBehaviour:
   button: {fileID: 16541526}
   zero: 0
   saveLocationString: /Slot1Data
+  one: 1
+  two: 2
 --- !u!1 &103113316
 GameObject:
   m_ObjectHideFlags: 0
@@ -1430,6 +1432,8 @@ MonoBehaviour:
   button: {fileID: 477469392}
   zero: 0
   saveLocationString: /Slot4Data
+  one: 1
+  two: 2
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -1622,6 +1626,8 @@ MonoBehaviour:
   button: {fileID: 525080860}
   zero: 0
   saveLocationString: /Slot3Data
+  one: 1
+  two: 2
 --- !u!1 &620916281
 GameObject:
   m_ObjectHideFlags: 0
@@ -2262,6 +2268,60 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 906538027}
   m_CullTransparentMesh: 1
+--- !u!1 &1070314062
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1070314064}
+  - component: {fileID: 1070314063}
+  m_Layer: 0
+  m_Name: TimeService
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1070314063
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1070314062}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0447fdf122be1e143928e721ea6c2921, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  URL: http://worldtimeapi.org/api/ip
+  hourSubStringValue: 0
+  minutSubStringValue: 3
+  secondSubStringValue: 6
+  removeStringCount: 3
+  startingCount_1: 5
+  startingCount_2: 2
+  sixtySeconds: 60
+  zero: 0
+  saveLocationString: /GameData
+--- !u!4 &1070314064
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1070314062}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1358299861
 GameObject:
   m_ObjectHideFlags: 0
@@ -2298,6 +2358,7 @@ MonoBehaviour:
   - {fileID: 477469395}
   queueIndex: 1
   zero: 0
+  SlotLoaded: 0
 --- !u!4 &1358299863
 Transform:
   m_ObjectHideFlags: 0
@@ -2421,6 +2482,8 @@ MonoBehaviour:
   button: {fileID: 1391569346}
   zero: 0
   saveLocationString: /Slot2Data
+  one: 1
+  two: 2
 --- !u!1 &1428574813
 GameObject:
   m_ObjectHideFlags: 0
