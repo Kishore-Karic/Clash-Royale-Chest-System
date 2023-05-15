@@ -92,6 +92,8 @@ namespace ChestSystem.Resource
 
             string json = JsonUtility.ToJson(gameSave, true);
             File.WriteAllText(Application.persistentDataPath + saveLocationString, json);
+
+            UIService.Instance.GameSaved(Enum.SaveType.GameSave);
         }
 
         public void ResetGame()
@@ -105,11 +107,6 @@ namespace ChestSystem.Resource
                 Gems = defaultGems;
                 RefreshUI();
             }
-        }
-
-        private void OnDestroy()
-        {
-            SaveGame();
         }
     }
 }

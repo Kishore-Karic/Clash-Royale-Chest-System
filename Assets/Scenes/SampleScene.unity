@@ -684,8 +684,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   generateChestButton: {fileID: 323434314}
-  coroutineDuration: 1
-  coroutineDelay: 0.5
+  coroutineDuration: 1.5
   yesButton: {fileID: 103113318}
   noButton: {fileID: 622824483}
   chestSlotsUI: {fileID: 367660561}
@@ -709,7 +708,6 @@ MonoBehaviour:
   resetButton: {fileID: 110161835}
   inGameResource: {fileID: 670622230}
   saveInfoText: Exit with Exit Button to Save and Exit
-  saveInfoTextColor: {r: 1, g: 1, b: 0, a: 0}
 --- !u!1 &323434312
 GameObject:
   m_ObjectHideFlags: 0

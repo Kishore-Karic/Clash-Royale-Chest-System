@@ -1,6 +1,7 @@
 using ChestSystem.Enum;
 using ChestSystem.GenericSingleton;
 using ChestSystem.Resource;
+using ChestSystem.Slot;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -13,10 +14,13 @@ namespace ChestSystem.Service
     {
         private Queue<string> displayTextQueue;
         private RequestType requestType;
+        private Coroutine endCoroutine;
+        private bool slotsSave;
+        private bool gameSave;
+        private bool saveCompleted;
 
         [SerializeField] private Button generateChestButton;
         [SerializeField] private float coroutineDuration;
-        [SerializeField] private float coroutineDelay;
         [SerializeField] private Button yesButton;
         [SerializeField] private Button noButton;
         [SerializeField] private GameObject chestSlotsUI;
@@ -44,6 +48,9 @@ namespace ChestSystem.Service
 
             displayMessageText.text = null;
             requestConfirmationText.text = null;
+            slotsSave = false;
+            gameSave = false;
+            saveCompleted = false;
 
             displayTextQueue.Enqueue(saveInfoText);
             StartCoroutine(CommonCoroutine(Color.yellow));
@@ -140,15 +147,48 @@ namespace ChestSystem.Service
             displayMessageText.text = null;
         }
 
+        public void GameSaved(SaveType saveType)
+        {
+            if(saveType == SaveType.SlotsSave)
+            {
+                slotsSave = true;
+            }
+            if(saveType == SaveType.GameSave)
+            {
+                gameSave = true;
+            }
+            if(slotsSave && gameSave)
+            {
+                saveCompleted = true;
+            }
+        }
+
+        private void SaveGame()
+        {
+            TimeService.Instance.GetTime();
+            SlotService.Instance.SaveSlots();
+            inGameResource.SaveGame();
+        }
+
         private void ResetGame()
         {
-            SlotService.Instance.ResetGame();
+            SlotService.Instance.ResetSlots();
             inGameResource.ResetGame();
         }
 
         private void ExitGame()
         {
-            TimeService.Instance.GetTime();
+            SaveGame();
+            if (endCoroutine != null)
+            {
+                StopCoroutine(endCoroutine);
+            }
+            endCoroutine = StartCoroutine(QuitApplication());
+        }
+
+        private IEnumerator QuitApplication()
+        {
+            yield return new WaitUntil(() => saveCompleted == true);
             Application.Quit();
         }
     }

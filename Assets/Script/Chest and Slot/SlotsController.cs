@@ -194,6 +194,7 @@ namespace ChestSystem.Slot
                 string json = JsonUtility.ToJson(slotData, true);
                 File.WriteAllText(Application.persistentDataPath + saveLocationString, json);
             }
+            SlotService.Instance.SetSlotsSavedCount();
         }
 
         public void ResetChestDetails()
@@ -218,11 +219,6 @@ namespace ChestSystem.Slot
                 chestController.StopTimer();
             }
             EmptySlot();
-        }
-
-        private void OnDestroy()
-        {
-            StoreChestDetails();
         }
     }
 }

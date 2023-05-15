@@ -1,3 +1,4 @@
+using ChestSystem.Enum;
 using ChestSystem.GenericSingleton;
 using ChestSystem.Slot;
 using System;
@@ -17,19 +18,23 @@ namespace ChestSystem.Service
         public bool SlotLoaded;
 
         private int slotsRemaining;
+        private event Action OnSave;
         private event Action OnReset;
         private Coroutine coroutine;
+        private int slotsSavedCount;
 
         protected override void Awake()
         {
             base.Awake();
             SlotLoaded = false;
             FirstChestUnlocked = false;
+            slotsSavedCount = zero;
         }
         private void Start()
         {
             for(int i = 0; i < slotsControllersList.Count; i++)
             {
+                OnSave += slotsControllersList[i].StoreChestDetails;
                 OnReset += slotsControllersList[i].ResetChestDetails;
             }
         }
@@ -103,7 +108,12 @@ namespace ChestSystem.Service
             slotsRemaining--;
         }
 
-        public void ResetGame()
+        public void SaveSlots()
+        {
+            OnSave?.Invoke();
+        }
+
+        public void ResetSlots()
         {
             OnReset?.Invoke();
             slotsRemaining = zero;
@@ -112,6 +122,16 @@ namespace ChestSystem.Service
         public void SetSlotRemaining()
         {
             slotsRemaining++;
+        }
+
+        public void SetSlotsSavedCount()
+        {
+            slotsSavedCount++;
+            if(slotsSavedCount == slotsControllersList.Count)
+            {
+                Debug.Log(slotsSavedCount + " " + slotsControllersList.Count);
+                UIService.Instance.GameSaved(SaveType.SlotsSave);
+            }
         }
     }
 }

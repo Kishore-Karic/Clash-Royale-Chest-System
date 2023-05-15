@@ -37,4 +37,10 @@ namespace ChestSystem.Enum
         AddToQueueStartUnlock,
         AddToUnlockQueue
     }
+
+    public enum SaveType
+    {
+        SlotsSave,
+        GameSave
+    }
 }
