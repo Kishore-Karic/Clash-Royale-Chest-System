@@ -1025,7 +1025,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0.22145817, y: 1}
-  m_AnchoredPosition: {x: -1, y: 0}
+  m_AnchoredPosition: {x: -1.0000153, y: 0}
   m_SizeDelta: {x: 24, y: 24}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &423386911
@@ -2179,11 +2179,20 @@ MonoBehaviour:
   minutSubStringValue: 3
   secondSubStringValue: 6
   removeStringCount: 3
-  startingCount_1: 5
-  startingCount_2: 2
+  removeSeconds: 5
+  removeMinutes: 2
   sixtySeconds: 60
   zero: 0
   saveLocationString: /GameData
+  dateSubStringValue: 8
+  monthSubStringValue: 5
+  yearSubStringValue: 0
+  removeDate: 7
+  removeMonth: 4
+  one: 1
+  averageDateInMonth: 30
+  secondsInDay: 86400
+  passedUnlockTimeInSeconds: 43200
 --- !u!4 &1070314064
 Transform:
   m_ObjectHideFlags: 0

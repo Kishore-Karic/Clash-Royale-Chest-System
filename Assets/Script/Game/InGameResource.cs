@@ -89,6 +89,9 @@ namespace ChestSystem.Resource
             gameSave.Coins = Coins;
             gameSave.Gems = Gems;
             gameSave.LastSavedTimeInSeconds = TimeService.Instance.CurrentTime;
+            gameSave.LastDate = TimeService.Instance.CurrentDate;
+            gameSave.LastMonth = TimeService.Instance.CurrentMonth;
+            gameSave.LastYear = TimeService.Instance.CurrentYear;
 
             string json = JsonUtility.ToJson(gameSave, true);
             File.WriteAllText(Application.persistentDataPath + saveLocationString, json);

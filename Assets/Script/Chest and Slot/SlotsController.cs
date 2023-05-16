@@ -118,10 +118,14 @@ namespace ChestSystem.Slot
                         {
                             TimeService.Instance.SetRemainingTime(TimeService.Instance.RemainingTime);
                         }
+                        QueueIndex = zero;
+                        --QueueIndex;
                     }
                     else
                     {
                         chestController.SetRemainingTime(savedData.RemainingTime);
+                        QueueIndex = zero;
+                        --QueueIndex;
                     }
 
                     SlotSaveData slotData = new SlotSaveData();
@@ -134,6 +138,12 @@ namespace ChestSystem.Slot
                     SlotService.Instance.SetSlotRemaining();
                     SlotIsTaken();
                 }
+            }
+
+            if(QueueIndex == zero)
+            {
+                QueueIndex = zero;
+                --QueueIndex;
             }
 
             SlotService.Instance.SlotLoaded = true;

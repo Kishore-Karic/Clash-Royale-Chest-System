@@ -29,6 +29,7 @@ namespace ChestSystem.Service
             SlotLoaded = false;
             FirstChestUnlocked = false;
             slotsSavedCount = zero;
+            queueIndex = zero;
         }
         private void Start()
         {
@@ -51,6 +52,7 @@ namespace ChestSystem.Service
         private IEnumerator ExecuteSlotController()
         {
             int count = zero;
+            queueIndex++;
 
             while (count != slotsControllersList.Count)
             {
@@ -66,6 +68,10 @@ namespace ChestSystem.Service
                     {
                         slotsControllersList[i].LoadSlotController();
                         count++;
+                    }
+                    else
+                    {
+                        SlotLoaded = true;
                     }
 
                     yield return new WaitUntil(() => SlotLoaded == true);
@@ -129,7 +135,6 @@ namespace ChestSystem.Service
             slotsSavedCount++;
             if(slotsSavedCount == slotsControllersList.Count)
             {
-                Debug.Log(slotsSavedCount + " " + slotsControllersList.Count);
                 UIService.Instance.GameSaved(SaveType.SlotsSave);
             }
         }
