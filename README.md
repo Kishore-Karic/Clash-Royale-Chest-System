@@ -30,8 +30,8 @@ A Chest System like Clash Royale with Save mechanism and can deduct time passed 
 * Generic Singleton for Services.
 
 # Screenshots
-![Picture_1](https://github.com/Kishore-Karic/Clash-Royale-Chest-System/assets/97879797/31b34ac6-90da-47d9-a51a-c6e4d3deb724)
-![Picture_2](https://github.com/Kishore-Karic/Clash-Royale-Chest-System/assets/97879797/c88d4b11-f380-447f-84ef-75ced87fa5f4)
-![Picture_3](https://github.com/Kishore-Karic/Clash-Royale-Chest-System/assets/97879797/d44f9c7b-0701-4e30-a7b9-7a6bd1de48c3)
-![Picture_4](https://github.com/Kishore-Karic/Clash-Royale-Chest-System/assets/97879797/e6342fcb-a822-4157-a7a3-ac9011fedab8)
-![Picture_5](https://github.com/Kishore-Karic/Clash-Royale-Chest-System/assets/97879797/7179f61c-b4f4-4fa5-a15c-cfbdc4e2a79b)
+![Picture_1](https://github.com/Kishore-Karic/Clash-Royale-Chest-System/assets/97879797/de5d3338-b5e5-49a8-99ba-0b8ea8f6082c) <br/>
+![Picture_2](https://github.com/Kishore-Karic/Clash-Royale-Chest-System/assets/97879797/7beb6a33-cfe0-4d06-a1ad-9918dae46bd0) <br/>
+![Picture_3](https://github.com/Kishore-Karic/Clash-Royale-Chest-System/assets/97879797/1e17ac11-a1ef-4cc4-8fc3-b8542c341e0e) <br/>
+![Picture_4](https://github.com/Kishore-Karic/Clash-Royale-Chest-System/assets/97879797/d20e8e63-a854-45a4-bc0e-e4c234e98b5f) <br/>
+![Picture_5](https://github.com/Kishore-Karic/Clash-Royale-Chest-System/assets/97879797/6ba0e28e-432d-4d50-83b8-9aa0ab0133b6) 
