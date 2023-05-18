@@ -1,6 +1,6 @@
 # Chest Royale
 A Chest System like Clash Royale with Save mechanism and can deduct time passed from last save when opening again. <br/>
-[Gameplay Trailer](https://drive.google.com/file/d/1RDp_EBn0DGD0POFzNWCAzlEGKtWEEBNb/view?usp=share_link) <br/>
+[Gameplay Trailer](https://drive.google.com/file/d/1E3Ym0DwyjAyFs3s52FQIRNhC1X-DqJI7/view?usp=share_link) <br/>
 [Playable Link](https://kishore-karic.itch.io/chestroyale) <br/>
 
 # Important Mechanism
@@ -10,8 +10,8 @@ A Chest System like Clash Royale with Save mechanism and can deduct time passed 
 * At Save take current time from Server and Save it and at Load take current time from Server and reduce it with Last Saved time to get Reamining time to calculate with Chest Unlocking time.
 
 # Game Functionality
-1. 4 different types of Chest.
-2. Each with different Unlock time.
+1. 4 different types of Chest each will have 3 tier.
+2. Each Chests with different Unlock time.
 3. Only one Chest can be Unlocking at a time.
 4. Maximum 2 Chests can be stored into Unlock queue we can edit it's limit too.
 5. If the Chest in queue is unlocked next will be automatically start unlocking.
@@ -22,7 +22,7 @@ A Chest System like Clash Royale with Save mechanism and can deduct time passed 
 10. Using JSON to Save and Load from directory path.
 11. At opening time will automatically reduce time passed from last save and make Chest into next State (Unlock or Open)
 12. Calculating time from SERVER to avoid Chesting with device time, So must have INTERNET connection.
-13. Updating current status on UI like Chest status (Lock, Unlock or Open), Chest Type (Commomn, Rare, Epic or Legendary), Unlock Timer in h/m/s format.
+13. Updating current status on UI like Chest status (Lock, Unlock or Open), Chest Type (Commomn, Rare, Epic or Legendary), Unlock Timer in d/h/m/s format.
 
 # Design Patterns
 * MVC for Chest.
@@ -30,8 +30,9 @@ A Chest System like Clash Royale with Save mechanism and can deduct time passed 
 * Generic Singleton for Services.
 
 # Screenshots
-![Picture_1](https://github.com/Kishore-Karic/Clash-Royale-Chest-System/assets/97879797/de5d3338-b5e5-49a8-99ba-0b8ea8f6082c) <br/>
-![Picture_2](https://github.com/Kishore-Karic/Clash-Royale-Chest-System/assets/97879797/7beb6a33-cfe0-4d06-a1ad-9918dae46bd0) <br/>
-![Picture_3](https://github.com/Kishore-Karic/Clash-Royale-Chest-System/assets/97879797/1e17ac11-a1ef-4cc4-8fc3-b8542c341e0e) <br/>
-![Picture_4](https://github.com/Kishore-Karic/Clash-Royale-Chest-System/assets/97879797/d20e8e63-a854-45a4-bc0e-e4c234e98b5f) <br/>
-![Picture_5](https://github.com/Kishore-Karic/Clash-Royale-Chest-System/assets/97879797/6ba0e28e-432d-4d50-83b8-9aa0ab0133b6) 
+![Picture_1](https://github.com/Kishore-Karic/Clash-Royale-Chest-System/assets/97879797/6fdae896-84f6-46e3-b7c0-240340e3c62a)
+![Picture_2](https://github.com/Kishore-Karic/Clash-Royale-Chest-System/assets/97879797/f9707ad0-694d-4f83-9d63-81ded2c2a185)
+![Picture_3](https://github.com/Kishore-Karic/Clash-Royale-Chest-System/assets/97879797/1725be7e-967f-4214-b1ba-bfd4b558ed70)
+![Picture_4](https://github.com/Kishore-Karic/Clash-Royale-Chest-System/assets/97879797/00af109c-ef54-41bd-b320-b6cb7fbe0296)
+![Picture_5](https://github.com/Kishore-Karic/Clash-Royale-Chest-System/assets/97879797/e20cbecd-c3be-4009-8e26-1157ea61de4c)
+![Picture_6](https://github.com/Kishore-Karic/Clash-Royale-Chest-System/assets/97879797/2b0c912d-df4b-4af1-86a9-5f68ac7b86bb)
