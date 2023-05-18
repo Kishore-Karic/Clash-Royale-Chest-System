@@ -17,6 +17,8 @@ namespace ChestSystem.Resource
         [SerializeField] private int defaultGems;
         [SerializeField] string saveLocationString;
         [SerializeField] private int zero;
+        [SerializeField] private int maxCoinsLimit;
+        [SerializeField] private int maxGemsLimit;
 
         private void Start()
         {
@@ -56,6 +58,15 @@ namespace ChestSystem.Resource
 
         private void RefreshUI()
         {
+            if(Coins > maxCoinsLimit)
+            {
+                Coins = maxCoinsLimit;
+            }
+            if(Gems > maxGemsLimit)
+            {
+                Gems = maxGemsLimit;
+            }
+
             coinsText.text = "" + Coins;
             gemsText.text = "" + Gems;
         }

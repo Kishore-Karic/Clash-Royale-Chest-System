@@ -95,7 +95,7 @@ namespace ChestSystem.Service
         private ChestScriptableObject GetRandomChest()
         {
             int index = Random.Range(0, chestSOList.ChestSO.Count);
-
+            
             return chestSOList.ChestSO[index];
         }
 

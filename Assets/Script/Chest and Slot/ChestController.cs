@@ -171,15 +171,16 @@ namespace ChestSystem.Chest
 
         private async void StartTimer(CancellationToken token)
         {
-            float hours, minutes, seconds;
+            int days, hours, minutes, seconds;
 
             while(UnlockTimeInSeconds > -chestModel.OneSecond && CurrentStatus == ChestStatus.Unlocking)
             {
-                hours = Mathf.FloorToInt(UnlockTimeInSeconds / chestModel.SecondsForHour);
+                days = Mathf.FloorToInt(UnlockTimeInSeconds / chestModel.SecondsInDay);
+                hours = Mathf.FloorToInt((UnlockTimeInSeconds % chestModel.SecondsInDay) / chestModel.SecondsForHour);
                 minutes = Mathf.FloorToInt((UnlockTimeInSeconds / chestModel.SixtySeconds) % chestModel.SixtySeconds);
                 seconds = Mathf.FloorToInt(UnlockTimeInSeconds % chestModel.SixtySeconds);
 
-                timerText.text = hours + chestModel.HourString + minutes + chestModel.MinuteString + seconds + chestModel.SecondString;
+                timerText.text = days + chestModel.DayString + hours + chestModel.HourString + minutes + chestModel.MinuteString + seconds + chestModel.SecondString;
 
                 gemsForTime = ((UnlockTimeInSeconds / chestModel.SixtySeconds) / chestModel.TenMinute);
                 instantOpenGemText.text = "" + MathF.Ceiling(gemsForTime);

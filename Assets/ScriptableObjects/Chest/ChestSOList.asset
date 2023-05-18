@@ -14,9 +14,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ChestSO:
   - {fileID: 11400000, guid: f2669bdda92869946bf08200f0a38580, type: 2}
+  - {fileID: 11400000, guid: c7352cc1772b21c4a9cc98f91a61341f, type: 2}
+  - {fileID: 11400000, guid: d407788570631854b968a34bbc850eb1, type: 2}
+  - {fileID: 11400000, guid: aa4f30eec990e6949bfc57bcaf701952, type: 2}
+  - {fileID: 11400000, guid: cab540110b9260b448bc5d20d8e8852b, type: 2}
   - {fileID: 11400000, guid: 00b49baf901943c498234ead70445d85, type: 2}
+  - {fileID: 11400000, guid: 585899da388b8a643b430339f05bae4e, type: 2}
+  - {fileID: 11400000, guid: 9fa29808415bea5419788445025982d5, type: 2}
   - {fileID: 11400000, guid: 9ec435e887cd6544fb5563ec88befb38, type: 2}
   - {fileID: 11400000, guid: 88fbff96ae2fd1744ac3f1072aed205e, type: 2}
+  - {fileID: 11400000, guid: cbb5f8cdf406a7e4da33c0c6d71afe97, type: 2}
+  - {fileID: 11400000, guid: 41779826e39b09f4ebc43c12e58adeb7, type: 2}
   TransparentValue: 0.78
   SixtySeconds: 60
   TenMinute: 10
@@ -27,3 +35,6 @@ MonoBehaviour:
   MinuteString: 'm '
   SecondString: s
   One: 1
+  TwentyFourHour: 24
+  SecondsInDay: 86400
+  DayString: 'd '

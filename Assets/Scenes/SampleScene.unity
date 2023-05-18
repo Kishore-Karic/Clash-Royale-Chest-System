@@ -1872,10 +1872,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   coinsText: {fileID: 906538029}
   gemsText: {fileID: 1763381899}
-  defaultCoins: 120
+  defaultCoins: 60
   defaultGems: 2
   saveLocationString: /GameData
   zero: 0
+  maxCoinsLimit: 99999999
+  maxGemsLimit: 99999999
 --- !u!4 &670622231
 Transform:
   m_ObjectHideFlags: 0
@@ -2192,11 +2194,9 @@ MonoBehaviour:
   one: 1
   averageDateInYear: 365
   secondsInDay: 86400
-  passedUnlockTimeInSeconds: 43200
   datesFromMonths: 000000001f0000001c0000001f0000001e0000001f0000001e0000001f0000001f0000001e0000001f0000001e0000001f000000
   four: 4
   febraury: 2
-  leapDate: 29
 --- !u!4 &1070314064
 Transform:
   m_ObjectHideFlags: 0

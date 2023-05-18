@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20041939b58ec67448077d014a4fb784, type: 3}
+  m_Name: Common II
+  m_EditorClassIdentifier: 
+  Name: Common II
+  UnlockDuration: 1200
+  MinCoin: 100
+  MaxCoin: 150
+  MinGem: 10
+  MaxGem: 15
+  LockedImage: {fileID: 21300000, guid: eac1ee73f5b0ad94ebdb365ad82a40cc, type: 3}
+  UnlockedImage: {fileID: 21300000, guid: 55c6a99d739abb24596587b7ea457804, type: 3}
+  OpenedImage: {fileID: 21300000, guid: cb569b9145aec894c9f5279b5066645d, type: 3}
+  UnlockAmount: 20m

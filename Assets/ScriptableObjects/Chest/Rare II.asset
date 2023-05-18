@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20041939b58ec67448077d014a4fb784, type: 3}
+  m_Name: Rare II
+  m_EditorClassIdentifier: 
+  Name: Rare II
+  UnlockDuration: 2700
+  MinCoin: 350
+  MaxCoin: 450
+  MinGem: 40
+  MaxGem: 55
+  LockedImage: {fileID: 21300000, guid: 2c22a440ec1c37241807a123f3ba69a8, type: 3}
+  UnlockedImage: {fileID: 21300000, guid: 8c9d01efae8de8e43b600151e7f1fae3, type: 3}
+  OpenedImage: {fileID: 21300000, guid: 7e8aa75ef14934e4ca1c545e190e740b, type: 3}
+  UnlockAmount: 45m

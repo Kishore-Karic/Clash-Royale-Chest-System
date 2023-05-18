@@ -105,7 +105,7 @@ namespace ChestSystem.Service
             Int32.TryParse(dateString, out dateValue);
             Int32.TryParse(monthString, out monthValue);
             Int32.TryParse(yearString, out yearValue);
-
+            
             currentMonth = monthValue;
             CurrentYear = yearValue;
             
@@ -123,7 +123,7 @@ namespace ChestSystem.Service
             Int32.TryParse(second, out timeSecond);
 
             CurrentTime = timeHoure * (sixtySeconds * sixtySeconds) + timeMinute * sixtySeconds + timeSecond;
-
+            
             if (firstTime)
             {
                 firstTime = false;
@@ -232,16 +232,20 @@ namespace ChestSystem.Service
                         leftedDates += FindLeftedLeapDates();
                         leftedDates += (averageDateInYear - savedData.LastSavedTotalDate) + TotalDate;
                     }
-                    
+                    else if((TotalDate - savedData.LastSavedTotalDate) > one)
+                    {
+                        leftedDates += (TotalDate - one) - savedData.LastSavedTotalDate;
+                    }
+
                     totalTime += (secondsInDay - savedData.LastSavedTimeInSeconds) + CurrentTime;
                     totalTime += leftedDates * secondsInDay;
                 }
                 else
                 {
-                    totalTime = CurrentTime;
+                    totalTime = CurrentTime - savedData.LastSavedTimeInSeconds;
                 }
 
-                RemainingTime = totalTime - savedData.LastSavedTimeInSeconds;
+                RemainingTime = totalTime;
             }
 
             SlotService.Instance.LoadSlots();

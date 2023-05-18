@@ -18,5 +18,7 @@ namespace ChestSystem.ScriptableObjects
         public string MinuteString;
         public string SecondString;
         public int One;
+        public int SecondsInDay;
+        public string DayString;
     }
 }

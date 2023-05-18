@@ -10,16 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 20041939b58ec67448077d014a4fb784, type: 3}
-  m_Name: EpicChest
+  m_Name: Epic II
   m_EditorClassIdentifier: 
-  ChestType: 3
-  Name: Epic
-  UnlockDuration: 3600
-  MinCoin: 600
-  MaxCoin: 800
-  MinGem: 45
-  MaxGem: 60
+  Name: Epic II
+  UnlockDuration: 14400
+  MinCoin: 750
+  MaxCoin: 900
+  MinGem: 140
+  MaxGem: 165
   LockedImage: {fileID: 21300000, guid: 491afa52e4046574da232c7242716de5, type: 3}
   UnlockedImage: {fileID: 21300000, guid: 159ffdc5d574b8341a9b6053e6b2826e, type: 3}
   OpenedImage: {fileID: 21300000, guid: 0d232b33f402efe48aa4ef3b95a57ad8, type: 3}
-  UnlockAmount: 1h
+  UnlockAmount: 4h

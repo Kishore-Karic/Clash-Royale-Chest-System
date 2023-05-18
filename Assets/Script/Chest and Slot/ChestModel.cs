@@ -6,7 +6,6 @@ namespace ChestSystem.Chest
 {
     public class ChestModel
     {
-        public ChestType ChestType { get; private set; }
         public ChestScriptableObject ChestScriptableObject { get; private set; }
         public string Name { get; private set; }
         public float UnlockDuration { get; private set; }
@@ -29,10 +28,11 @@ namespace ChestSystem.Chest
         public string MinuteString { get; private set; }
         public string SecondString { get; private set; }
         public int One { get; private set; }
+        public int SecondsInDay { get; private set; }
+        public string DayString { get; private set; }
 
         public ChestModel(ChestScriptableObject chestSO, ChestScriptableObjectList chestSOList)
         {
-            ChestType = chestSO.ChestType;
             ChestScriptableObject = chestSO;
             Name = chestSO.Name;
             UnlockDuration = chestSO.UnlockDuration;
@@ -55,6 +55,8 @@ namespace ChestSystem.Chest
             MinuteString = chestSOList.MinuteString;
             SecondString = chestSOList.SecondString;
             One = chestSOList.One;
+            SecondsInDay = chestSOList.SecondsInDay;
+            DayString = chestSOList.DayString;
         }
     }
 }

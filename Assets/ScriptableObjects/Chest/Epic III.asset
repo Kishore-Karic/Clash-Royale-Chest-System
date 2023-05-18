@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20041939b58ec67448077d014a4fb784, type: 3}
+  m_Name: Epic III
+  m_EditorClassIdentifier: 
+  Name: Epic III
+  UnlockDuration: 7200
+  MinCoin: 600
+  MaxCoin: 750
+  MinGem: 100
+  MaxGem: 140
+  LockedImage: {fileID: 21300000, guid: 491afa52e4046574da232c7242716de5, type: 3}
+  UnlockedImage: {fileID: 21300000, guid: 159ffdc5d574b8341a9b6053e6b2826e, type: 3}
+  OpenedImage: {fileID: 21300000, guid: 0d232b33f402efe48aa4ef3b95a57ad8, type: 3}
+  UnlockAmount: 2h
