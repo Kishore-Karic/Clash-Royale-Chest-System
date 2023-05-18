@@ -2190,9 +2190,13 @@ MonoBehaviour:
   removeDate: 7
   removeMonth: 4
   one: 1
-  averageDateInMonth: 30
+  averageDateInYear: 365
   secondsInDay: 86400
   passedUnlockTimeInSeconds: 43200
+  datesFromMonths: 000000001f0000001c0000001f0000001e0000001f0000001e0000001f0000001f0000001e0000001f0000001e0000001f000000
+  four: 4
+  febraury: 2
+  leapDate: 29
 --- !u!4 &1070314064
 Transform:
   m_ObjectHideFlags: 0

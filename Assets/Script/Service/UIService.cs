@@ -1,7 +1,6 @@
 using ChestSystem.Enum;
 using ChestSystem.GenericSingleton;
 using ChestSystem.Resource;
-using ChestSystem.Slot;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;

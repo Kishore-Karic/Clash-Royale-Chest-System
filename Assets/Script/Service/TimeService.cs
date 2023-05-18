@@ -1,6 +1,7 @@
 using ChestSystem.GenericSingleton;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
 using UnityEngine;
@@ -26,23 +27,33 @@ namespace ChestSystem.Service
         [SerializeField] private int removeDate;
         [SerializeField] private int removeMonth;
         [SerializeField] private int one;
-        [SerializeField] private int averageDateInMonth;
+        [SerializeField] private int averageDateInYear;
         [SerializeField] private int secondsInDay;
-        [SerializeField] private int passedUnlockTimeInSeconds;
+        [SerializeField] private List<int> datesFromMonths;
+        [SerializeField] private int four;
+        [SerializeField] private int febraury;
 
         public float CurrentTime { get; private set; }
         public float RemainingTime { get; private set; }
-        public int CurrentDate { get; private set; }
-        public int CurrentMonth { get; private set; }
+        public int TotalDate { get; private set; }
         public int CurrentYear { get; private set; }
+        public int LeapYear { get; private set; }
 
         private Coroutine coroutine;
         private bool firstTime;
+        private GameSaveData savedData;
+        private int currentMonth;
 
         protected override void Awake()
         {
             base.Awake();
             firstTime = true;
+            if (File.Exists(Application.persistentDataPath + saveLocationString))
+            {
+                string json = File.ReadAllText(Application.persistentDataPath + saveLocationString);
+                savedData = JsonUtility.FromJson<GameSaveData>(json);
+            }
+            
             GetTime();
         }
 
@@ -95,10 +106,9 @@ namespace ChestSystem.Service
             Int32.TryParse(monthString, out monthValue);
             Int32.TryParse(yearString, out yearValue);
 
-            CurrentDate = dateValue;
-            CurrentMonth = monthValue;
+            currentMonth = monthValue;
             CurrentYear = yearValue;
-
+            
             string second = time.Substring(secondSubStringValue);
             time = time.Remove(removeSeconds, removeStringCount);
 
@@ -113,47 +123,125 @@ namespace ChestSystem.Service
             Int32.TryParse(second, out timeSecond);
 
             CurrentTime = timeHoure * (sixtySeconds * sixtySeconds) + timeMinute * sixtySeconds + timeSecond;
-            
+
             if (firstTime)
             {
                 firstTime = false;
-                SetRemainingTime();
-            }
-        }
-
-        private void SetRemainingTime()
-        {
-            if (RemainingTime < zero)
-            {
-                RemainingTime = zero;
-            }
-
-            if (File.Exists(Application.persistentDataPath + saveLocationString))
-            {
-                string json = File.ReadAllText(Application.persistentDataPath + saveLocationString);
-                GameSaveData savedData = JsonUtility.FromJson<GameSaveData>(json);
-
-                if (savedData.LastDate < CurrentDate || savedData.LastDate > CurrentDate && (CurrentDate == one || CurrentDate > one))
+                if(File.Exists(Application.persistentDataPath + saveLocationString))
                 {
-                    int leftedDates = zero;
-                    if(CurrentDate == one || CurrentDate > one)
-                    {
-                        leftedDates = (averageDateInMonth - savedData.LastDate) + CurrentDate; 
-                    }
-                    float tempCurrentTime = (secondsInDay * leftedDates) - savedData.LastSavedTimeInSeconds;
-                    RemainingTime = CurrentTime + tempCurrentTime;
+                    LeapYear = savedData.LastLeapYear;
                 }
                 else
                 {
-                    if (CurrentMonth != savedData.LastMonth || CurrentYear != savedData.LastYear)
-                    {
-                        RemainingTime = passedUnlockTimeInSeconds;
-                    }
-                    else
-                    {
-                        RemainingTime = CurrentTime - savedData.LastSavedTimeInSeconds;
-                    }
+                    LeapYear = FindLeapYear();
                 }
+                CalculateTotalDate(dateValue, monthValue);
+                FindRemainingTime();
+            }
+        }
+
+        private int FindLeapYear()
+        {
+            bool foundLeapYear = false;
+            int year = CurrentYear;
+
+            while (foundLeapYear == false)
+            {
+                float floatValue = (float)year / four;
+                int intValue = (int)floatValue;
+                
+                if (intValue == floatValue)
+                {
+                    foundLeapYear = true;
+                }
+                else
+                {
+                    year -= one;
+                }
+            }
+
+            return year;
+        }
+
+        private int FindLeftedLeapDates()
+        {
+            int leftedLeapDate = zero;
+            int tempLeapYear = FindLeapYear();
+            LeapYear = tempLeapYear;
+
+            if(tempLeapYear > savedData.LastSavedYear)
+            {
+                if (tempLeapYear == CurrentYear)
+                {
+                    tempLeapYear -= four;
+                }
+                while (tempLeapYear > savedData.LastSavedYear)
+                {
+                    leftedLeapDate += one;
+                    tempLeapYear -= four;
+                }
+            }
+            
+            return leftedLeapDate;
+        }
+
+        private void CalculateTotalDate(int todayDate, int thisMonth)
+        {
+            TotalDate = zero;
+
+            for (int i = 0; i < thisMonth; i++)
+            {
+                TotalDate += datesFromMonths[i];
+            }
+            TotalDate += todayDate;
+
+            if (CurrentYear == LeapYear)
+            {
+                if(currentMonth > febraury)
+                {
+                    TotalDate += one;
+                }
+            }
+            else if ((LeapYear + four) == CurrentYear)
+            {
+                LeapYear += four;
+                if (currentMonth > febraury)
+                {
+                    TotalDate += one;
+                }
+            }
+        }
+
+        private void FindRemainingTime()
+        {
+            RemainingTime = zero;
+
+            if (File.Exists(Application.persistentDataPath + saveLocationString))
+            {
+                float totalTime = zero;
+                if (savedData.LastSavedTotalDate < TotalDate || savedData.LastSavedTotalDate > TotalDate || CurrentYear != savedData.LastSavedYear)
+                {
+                    int leftedDates = zero;
+
+                    if (CurrentYear != savedData.LastSavedYear)
+                    {
+                        if ((CurrentYear - savedData.LastSavedYear) > one)
+                        {
+                            leftedDates += ((CurrentYear - one) - savedData.LastSavedYear) * averageDateInYear;
+                        }
+                        leftedDates += FindLeftedLeapDates();
+                        leftedDates += (averageDateInYear - savedData.LastSavedTotalDate) + TotalDate;
+                    }
+                    
+                    totalTime += (secondsInDay - savedData.LastSavedTimeInSeconds) + CurrentTime;
+                    totalTime += leftedDates * secondsInDay;
+                }
+                else
+                {
+                    totalTime = CurrentTime;
+                }
+
+                RemainingTime = totalTime - savedData.LastSavedTimeInSeconds;
             }
 
             SlotService.Instance.LoadSlots();
