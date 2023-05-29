@@ -1,6 +1,6 @@
 # Chest Royale
 A Chest System like Clash Royale with Save mechanism and can deduct time passed from last save when opening again. <br/>
-[Gameplay Trailer](https://drive.google.com/file/d/1E3Ym0DwyjAyFs3s52FQIRNhC1X-DqJI7/view?usp=share_link) <br/>
+[Gameplay Trailer](https://youtu.be/QyO1bi01ajc) <br/>
 [Playable Link](https://kishore-karic.itch.io/chestroyale) <br/>
 
 # Important Mechanism
