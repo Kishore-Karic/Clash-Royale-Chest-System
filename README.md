@@ -15,7 +15,7 @@ A Chest System like Clash Royale with Save mechanism and can deduct time passed 
 3. Only one Chest can be Unlocking at a time.
 4. Maximum 2 Chests can be stored into Unlock queue we can edit it's limit too.
 5. If the Chest in queue is unlocked next will be automatically start unlocking.
-6. Calculating time Asynchronausly using Async Await.
+6. Calculating time Asynchronously using Async Await.
 7. Also can open with Gems if they meet the required Gems means.
 8. Gems can be calculated like 1 Gem for 10 minutes.
 9. All the Chests with current details and Currencies can be SAVED if only exit with Exit button.
